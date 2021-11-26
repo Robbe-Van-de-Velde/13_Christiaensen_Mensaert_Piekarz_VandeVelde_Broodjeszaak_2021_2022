@@ -15,7 +15,5 @@ public class BroodjeszaakMain extends Application {
 		KitchenView kitchenView = new KitchenView();
 	}
 	
-	public static void main(String[] args) {
-		launch(args);
-	}
+	public static void main(String[] args) {launch(args);}
 }
