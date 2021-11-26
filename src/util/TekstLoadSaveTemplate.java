@@ -1,11 +1,12 @@
 package util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import model.Beleg;
+import model.Broodje;
+
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public abstract class TekstLoadSaveTemplate <K,V>{
 
@@ -23,6 +24,8 @@ public abstract class TekstLoadSaveTemplate <K,V>{
         }
         return returnMap;
     }
+
+    /*abstract void save(File file, TreeMap<String, Object> data);*/
 
     abstract V maakObject(String[] tokens);
 
