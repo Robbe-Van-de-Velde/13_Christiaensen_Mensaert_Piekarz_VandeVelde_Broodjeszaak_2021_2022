@@ -2,14 +2,14 @@ package model;
 
 public class Broodje {
     String naam;
-    int vooraad, verkocht;
+    int voorraad, verkocht;
     double prijs;
 
 
     public Broodje(String naam, double prijs, int vooraad, int verkocht) {
         this.naam = naam;
         this.prijs = prijs;
-        this.vooraad = vooraad;
+        this.voorraad = vooraad;
         this.verkocht = verkocht;
     }
 
@@ -21,11 +21,16 @@ public class Broodje {
         return prijs;
     }
 
-    public int getVooraad() {
-        return vooraad;
+    public int getVoorraad() {
+        return voorraad;
     }
 
     public int getVerkocht() {
         return verkocht;
+    }
+
+    @Override
+    public String toString() {
+        return this.naam + " " + prijs + " " + voorraad;
     }
 }

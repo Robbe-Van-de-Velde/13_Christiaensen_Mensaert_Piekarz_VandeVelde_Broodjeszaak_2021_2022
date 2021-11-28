@@ -1,13 +1,17 @@
 package model;
 
+/**
+ * @author Patryk, Robbe
+ */
+
 public class Beleg {
     String naam;
-    int vooraad, verkocht;
+    int voorraad, verkocht;
     double prijs;
 
     public Beleg(String naam, double prijs, int vooraad, int verkocht) {
         this.naam = naam;
-        this.vooraad = vooraad;
+        this.voorraad = vooraad;
         this.verkocht = verkocht;
         this.prijs = prijs;
     }
@@ -16,8 +20,8 @@ public class Beleg {
         return naam;
     }
 
-    public int getVooraad() {
-        return vooraad;
+    public int getVoorraad() {
+        return voorraad;
     }
 
     public int getVerkocht() {
@@ -26,5 +30,10 @@ public class Beleg {
 
     public double getPrijs() {
         return prijs;
+    }
+
+    @Override
+    public String toString() {
+        return this.naam + " " + prijs + " " + voorraad;
     }
 }
