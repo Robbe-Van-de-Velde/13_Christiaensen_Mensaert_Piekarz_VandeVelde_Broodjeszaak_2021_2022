@@ -28,6 +28,8 @@ public class BroodjesTekstLoadSave extends TekstLoadSaveTemplate{
             throw new IllegalStateException("File not found");}
     }*/
 
+    /**@author Patryk
+     */
     @Override
     Object maakObject(String[] tokens) {
         String naam = tokens[0];
@@ -38,6 +40,8 @@ public class BroodjesTekstLoadSave extends TekstLoadSaveTemplate{
         return broodje;
     }
 
+    /**@author Patryk
+     */
     @Override
     Object getKey(String[] tokens) {
         return tokens[0];

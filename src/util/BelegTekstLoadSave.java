@@ -10,8 +10,10 @@ import java.util.TreeMap;
 public class BelegTekstLoadSave extends TekstLoadSaveTemplate{
 
 
-    
 
+
+    /**@author Patryk
+     */
     @Override
     Object maakObject(String[] tokens) {
         String naam = tokens[0];
@@ -23,6 +25,8 @@ public class BelegTekstLoadSave extends TekstLoadSaveTemplate{
         return beleg;
     }
 
+    /**@author Patryk
+     */
     @Override
     Object getKey(String[] tokens) {
         return tokens[0];
