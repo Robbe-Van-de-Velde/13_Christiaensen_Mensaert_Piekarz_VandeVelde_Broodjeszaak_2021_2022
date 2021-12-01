@@ -1,21 +1,17 @@
-package util;
+package model.database.loadSaveStrategies;
 
 import model.Beleg;
+import util.TekstLoadSaveTemplate;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-public class BelegTekstLoadSave extends TekstLoadSaveTemplate{
+public class BelegTekstLoadSave extends TekstLoadSaveTemplate {
 
-
-
-
-    /**@author Patryk
-     */
     @Override
-    Object maakObject(String[] tokens) {
+    public Object maakObject(String[] tokens) {
         String naam = tokens[0];
         Double prijs = (Double.parseDouble(tokens[1]));
         int vooraad = (Integer.parseInt(tokens[2]));
@@ -25,10 +21,8 @@ public class BelegTekstLoadSave extends TekstLoadSaveTemplate{
         return beleg;
     }
 
-    /**@author Patryk
-     */
     @Override
-    Object getKey(String[] tokens) {
+    public Object getKey(String[] tokens) {
         return tokens[0];
     }
 }

@@ -1,13 +1,12 @@
 package model.database;
 
 import model.Beleg;
-import util.BelegTekstLoadSave;
+import model.database.loadSaveStrategies.BelegTekstLoadSave;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
 /**

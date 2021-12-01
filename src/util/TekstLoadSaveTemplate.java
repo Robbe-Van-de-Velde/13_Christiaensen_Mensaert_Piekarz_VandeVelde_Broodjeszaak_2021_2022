@@ -27,8 +27,8 @@ public abstract class TekstLoadSaveTemplate <K,V>{
 
     /*abstract void save(File file, TreeMap<String, Object> data);*/
 
-    abstract V maakObject(String[] tokens);
+    public abstract V maakObject(String[] tokens);
 
-    abstract K getKey(String[] tokens);
+    public abstract K getKey(String[] tokens);
 }
 

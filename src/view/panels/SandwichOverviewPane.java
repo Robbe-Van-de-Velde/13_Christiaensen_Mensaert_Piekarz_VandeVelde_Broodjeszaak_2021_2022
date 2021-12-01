@@ -17,6 +17,9 @@ import model.Broodje;
 
 import java.util.List;
 
+/**
+ * @author Robbe
+ */
 
 public class SandwichOverviewPane extends GridPane{
 	private List<Broodje> broodjes;

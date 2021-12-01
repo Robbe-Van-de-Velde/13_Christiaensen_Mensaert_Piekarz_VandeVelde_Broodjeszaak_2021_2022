@@ -1,6 +1,7 @@
-package util;
+package model.database.loadSaveStrategies;
 
 import model.Broodje;
+import util.TekstLoadSaveTemplate;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-public class BroodjesTekstLoadSave extends TekstLoadSaveTemplate{
+public class BroodjesTekstLoadSave extends TekstLoadSaveTemplate {
 
 
     /*@Override
@@ -28,10 +29,8 @@ public class BroodjesTekstLoadSave extends TekstLoadSaveTemplate{
             throw new IllegalStateException("File not found");}
     }*/
 
-    /**@author Patryk
-     */
     @Override
-    Object maakObject(String[] tokens) {
+    public Object maakObject(String[] tokens) {
         String naam = tokens[0];
         Double prijs = (Double.parseDouble(tokens[1]));
         int vooraad = (Integer.parseInt(tokens[2]));
@@ -40,10 +39,8 @@ public class BroodjesTekstLoadSave extends TekstLoadSaveTemplate{
         return broodje;
     }
 
-    /**@author Patryk
-     */
     @Override
-    Object getKey(String[] tokens) {
+    public Object getKey(String[] tokens) {
         return tokens[0];
     }
 }

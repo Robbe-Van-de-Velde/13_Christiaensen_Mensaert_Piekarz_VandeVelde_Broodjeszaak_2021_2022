@@ -1,9 +1,7 @@
 package model.database;
 
-import model.Beleg;
 import model.Broodje;
-import util.BelegTekstLoadSave;
-import util.BroodjesTekstLoadSave;
+import model.database.loadSaveStrategies.BroodjesTekstLoadSave;
 
 import java.io.File;
 import java.io.IOException;
