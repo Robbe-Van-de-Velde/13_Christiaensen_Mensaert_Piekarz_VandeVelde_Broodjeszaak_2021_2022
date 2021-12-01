@@ -1,6 +1,7 @@
 package model.database.loadSaveStrategies;
 
 import model.Beleg;
+import model.Broodje;
 import util.TekstLoadSaveTemplate;
 
 import java.io.File;
@@ -24,5 +25,11 @@ public class BelegTekstLoadSave extends TekstLoadSaveTemplate {
     @Override
     public Object getKey(String[] tokens) {
         return tokens[0];
+    }
+
+    @Override
+    public String getLijn(Object object) {
+        Beleg beleg = (Beleg) object;
+        return beleg.getNaam() + ","+beleg.getPrijs()+","+beleg.getVoorraad()+","+beleg.getVoorraad() + "\n";
     }
 }

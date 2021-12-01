@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Robbe
+ */
+
 public abstract class ExcelLoadSaveTemplate<K,V> implements LoadSaveStrategy {
 
     public final Map<K,V> load(File file) throws IOException {

@@ -43,4 +43,10 @@ public class BroodjesTekstLoadSave extends TekstLoadSaveTemplate {
     public Object getKey(String[] tokens) {
         return tokens[0];
     }
+
+    @Override
+    public String getLijn(Object object) {
+        Broodje broodje = (Broodje) object;
+        return broodje.getNaam() + ","+broodje.getPrijs()+","+broodje.getVoorraad()+","+broodje.getVoorraad() + "\n";
+    }
 }

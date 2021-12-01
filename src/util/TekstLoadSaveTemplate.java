@@ -2,13 +2,14 @@ package util;
 
 import model.Beleg;
 import model.Broodje;
+import model.database.loadSaveStrategies.LoadSaveStrategy;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-public abstract class TekstLoadSaveTemplate <K,V>{
+public abstract class TekstLoadSaveTemplate <K,V> {
 
     public final Map<K,V> load(File file) throws IOException {
         Map<K,V> returnMap = new HashMap<K,V>();
@@ -25,10 +26,24 @@ public abstract class TekstLoadSaveTemplate <K,V>{
         return returnMap;
     }
 
-    /*abstract void save(File file, TreeMap<String, Object> data);*/
+    public final void save(File file, TreeMap<String, Object> data) {
+        try {
+            PrintWriter writer = new PrintWriter(file);
+            String line = null;
+            for (String s : data.keySet()) {
+                line = getLijn(data.get(s));
+                writer.write(line);
+            }
+            writer.close();
+        } catch (FileNotFoundException exc) {
+            throw new IllegalStateException("File not found");
+        }
+    }
 
     public abstract V maakObject(String[] tokens);
 
     public abstract K getKey(String[] tokens);
+
+    public abstract String getLijn(Object object);
 }
 
