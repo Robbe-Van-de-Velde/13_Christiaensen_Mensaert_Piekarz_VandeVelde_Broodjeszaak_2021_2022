@@ -1,7 +1,8 @@
 package model.database;
 
 import model.Beleg;
-import model.database.loadSaveStrategies.BelegTekstLoadSave;
+import model.database.loadSaveStrategies.BelegExcelLoadSaveStrategy;
+import model.database.loadSaveStrategies.BelegTekstLoadSaveStrategy;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +19,18 @@ public class BelegDB {
 
     public BelegDB() throws IOException {
         File belegbestand = new File("src/bestanden/beleg.txt");
-        this.beleggen = new TreeMap<>(new BelegTekstLoadSave().load(belegbestand));
+        this.beleggen = new TreeMap<>(new BelegTekstLoadSaveStrategy().load(belegbestand));
+    }
+
+    public BelegDB(String fileType) throws IOException {
+        File file = null;
+        if (fileType.equals("txt")){
+            file = new File("src/bestanden/beleg.txt");
+            this.beleggen = new TreeMap<>(new BelegTekstLoadSaveStrategy().load(file));
+        } else if (fileType.equals("xls")){
+            file = new File("src/bestanden/beleg.xls");
+            this.beleggen = new TreeMap<>(new BelegExcelLoadSaveStrategy().load(file));
+        }
     }
 
     public List<Beleg> getBeleggen() {

@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Robbe
  */
 
-public abstract class ExcelLoadSaveTemplate<K,V> implements LoadSaveStrategy {
+public abstract class ExcelLoadSaveTemplate<K,V> {
 
     public final Map<K,V> load(File file) throws IOException {
         ExcelPlugin plugin = new ExcelPlugin();
@@ -37,7 +37,23 @@ public abstract class ExcelLoadSaveTemplate<K,V> implements LoadSaveStrategy {
         return returnMap;
     }
 
+    public final void save(File file, Map<K, V> data){
+        ArrayList<ArrayList<String>> lines = new ArrayList<>();
+        for (K key : data.keySet()){
+            ArrayList<String> line = getParts(data.get(key));
+            lines.add(line);
+        }
+        ExcelPlugin plugin = new ExcelPlugin();
+        try {
+            plugin.write(file, lines);
+        } catch (Exception e){
+            throw new IllegalStateException("File not found");
+        }
+    }
+
     public abstract V maakObject(String[] tokens);
 
     public abstract K getKey(String[] tokens);
+
+    public abstract ArrayList<String> getParts(Object object);
 }

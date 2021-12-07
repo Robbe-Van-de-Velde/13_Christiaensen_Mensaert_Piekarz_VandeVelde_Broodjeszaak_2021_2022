@@ -5,7 +5,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Robbe
+ */
+
 public interface LoadSaveStrategy <K,V> {
     Map<K,V> load(File file) throws IOException;
-    void save(File file, HashMap<K, V> data);
+    void save(File file, Map<K,V> data);
 }

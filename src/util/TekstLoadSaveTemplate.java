@@ -9,6 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * @author Patryk, Robbe
+ */
+
 public abstract class TekstLoadSaveTemplate <K,V> {
 
     public final Map<K,V> load(File file) throws IOException {
@@ -26,11 +30,11 @@ public abstract class TekstLoadSaveTemplate <K,V> {
         return returnMap;
     }
 
-    public final void save(File file, TreeMap<String, Object> data) {
+    public final void save(File file, Map<K,V> data) {
         try {
             PrintWriter writer = new PrintWriter(file);
             String line = null;
-            for (String s : data.keySet()) {
+            for (K s : data.keySet()) {
                 line = getLijn(data.get(s));
                 writer.write(line);
             }

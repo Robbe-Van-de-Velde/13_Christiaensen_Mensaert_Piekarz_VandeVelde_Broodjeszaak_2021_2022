@@ -10,11 +10,15 @@ import view.OrderView;
 
 import java.io.IOException;
 
+/**
+ * @author Robbe
+ */
 
 public class BroodjeszaakMain extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-		BestelFacade facade = new BestelFacade();
+		// Als je met excel wilt laten dan voeg je in de constructor "xls" als je tekst wilt dan "txt"
+		BestelFacade facade = new BestelFacade("xls");
 
 		AdminViewController adcontroller = new AdminViewController(facade);
 		AdminView adminView = new AdminView(adcontroller);

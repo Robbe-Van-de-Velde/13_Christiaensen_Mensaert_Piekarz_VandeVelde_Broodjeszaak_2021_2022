@@ -1,25 +1,28 @@
 package model.database.loadSaveStrategies;
 
-import model.Beleg;
 import model.Broodje;
 import util.TekstLoadSaveTemplate;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-public class BelegTekstLoadSave extends TekstLoadSaveTemplate {
+/**
+ * @author Robbe
+ */
 
+public class BroodjesTekstLoadSaveStrategy extends TekstLoadSaveTemplate {
     @Override
     public Object maakObject(String[] tokens) {
         String naam = tokens[0];
         Double prijs = (Double.parseDouble(tokens[1]));
         int vooraad = (Integer.parseInt(tokens[2]));
         int verkocht = (Integer.parseInt(tokens[3]));
-
-        Beleg beleg = new Beleg(naam, prijs, vooraad, verkocht);
-        return beleg;
+        Broodje broodje = new Broodje(naam, prijs, vooraad, verkocht);
+        return broodje;
     }
 
     @Override
@@ -29,7 +32,7 @@ public class BelegTekstLoadSave extends TekstLoadSaveTemplate {
 
     @Override
     public String getLijn(Object object) {
-        Beleg beleg = (Beleg) object;
-        return beleg.getNaam() + ","+beleg.getPrijs()+","+beleg.getVoorraad()+","+beleg.getVoorraad() + "\n";
+        Broodje broodje = (Broodje) object;
+        return broodje.getNaam() + ","+broodje.getPrijs()+","+broodje.getVoorraad()+","+broodje.getVoorraad() + "\n";
     }
 }

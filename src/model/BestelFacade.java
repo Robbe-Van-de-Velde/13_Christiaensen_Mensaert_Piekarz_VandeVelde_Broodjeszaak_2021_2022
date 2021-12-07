@@ -19,6 +19,11 @@ public class BestelFacade implements Subject {
         this.broodjesDB = new BroodjesDB();
     }
 
+    public BestelFacade(String fileType) throws IOException {
+        this.belegDB = new BelegDB(fileType);
+        this.broodjesDB = new BroodjesDB(fileType);
+    }
+
     @Override
     public void addObserver(Observer observer) {
 

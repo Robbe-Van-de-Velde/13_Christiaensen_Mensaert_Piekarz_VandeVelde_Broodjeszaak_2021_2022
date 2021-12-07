@@ -1,15 +1,20 @@
 package model.database.loadSaveStrategies;
 
 import model.Beleg;
-import util.ExcelLoadSaveTemplate;
+import model.Broodje;
+import util.TekstLoadSaveTemplate;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
 
 /**
  * @author Robbe
  */
 
-public class BelegExcelLoadSaveStrategy extends ExcelLoadSaveTemplate implements LoadSaveStrategy {
+public class BelegTekstLoadSaveStrategy extends TekstLoadSaveTemplate implements LoadSaveStrategy{
+
     @Override
     public Object maakObject(String[] tokens) {
         String naam = tokens[0];
@@ -27,13 +32,8 @@ public class BelegExcelLoadSaveStrategy extends ExcelLoadSaveTemplate implements
     }
 
     @Override
-    public ArrayList<String> getParts(Object object) {
+    public String getLijn(Object object) {
         Beleg beleg = (Beleg) object;
-        ArrayList<String> parts = new ArrayList<>();
-        parts.add(beleg.getNaam());
-        parts.add("" + beleg.getPrijs());
-        parts.add("" + beleg.getVoorraad());
-        parts.add("" + beleg.getVerkocht());
-        return parts;
+        return beleg.getNaam() + ","+beleg.getPrijs()+","+beleg.getVoorraad()+","+beleg.getVoorraad() + "\n";
     }
 }

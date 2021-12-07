@@ -1,8 +1,7 @@
 package model.database;
 
 import model.Broodje;
-import model.database.loadSaveStrategies.BroodjesTekstLoadSave;
-import model.database.loadSaveStrategies.LoadSaveStrategy;
+import model.database.loadSaveStrategies.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +18,18 @@ public class BroodjesDB {
 
     public BroodjesDB() throws IOException {
         File belegbestand = new File("src/bestanden/broodjes.txt");
-        this.broodjes = new TreeMap<>(new BroodjesTekstLoadSave().load(belegbestand));
+        this.broodjes = new TreeMap<>(new BroodjesTekstLoadSaveStrategy().load(belegbestand));
+    }
+
+    public BroodjesDB(String fileType) throws IOException {
+        File file = null;
+        if (fileType.equals("txt")){
+            file = new File("src/bestanden/broodjes.txt");
+            this.broodjes = new TreeMap<>(new BroodjesTekstLoadSaveStrategy().load(file));
+        } else if (fileType.equals("xls")){
+            file = new File("src/bestanden/broodjes.xls");
+            this.broodjes = new TreeMap<>(new BroodjesExcelLoadSaveStrategy().load(file));
+        }
     }
 
     public List<Broodje> getBroodjes() {
@@ -30,8 +40,7 @@ public class BroodjesDB {
         return result;
     }
 
-    public void save(File file){
-        BroodjesTekstLoadSave loadSaveStrategy = new BroodjesTekstLoadSave();
-        loadSaveStrategy.save(file, this.broodjes);
+    public void save(File file, LoadSaveStrategy strategy){
+        strategy.save(file, this.broodjes);
     }
 }
