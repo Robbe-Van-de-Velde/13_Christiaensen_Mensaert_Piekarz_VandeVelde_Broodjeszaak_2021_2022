@@ -3,9 +3,9 @@ package model;
 import model.database.BelegDB;
 import model.database.BroodjesDB;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.TreeMap;
 
 /**
  * @author Robbe
@@ -14,14 +14,9 @@ public class BestelFacade implements Subject {
     private BelegDB belegDB;
     private BroodjesDB broodjesDB;
 
-    public BestelFacade() throws IOException {
-        this.belegDB = new BelegDB();
-        this.broodjesDB = new BroodjesDB();
-    }
-
-    public BestelFacade(String fileType) throws IOException {
-        this.belegDB = new BelegDB(fileType);
-        this.broodjesDB = new BroodjesDB(fileType);
+    public BestelFacade(File broodjesFile, File belegFile, String fileType) throws IOException {
+        this.belegDB = new BelegDB(belegFile, fileType);
+        this.broodjesDB = new BroodjesDB(broodjesFile, fileType);
     }
 
     @Override

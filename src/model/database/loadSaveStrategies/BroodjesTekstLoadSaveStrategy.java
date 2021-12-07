@@ -14,7 +14,7 @@ import java.util.TreeMap;
  * @author Robbe
  */
 
-public class BroodjesTekstLoadSaveStrategy extends TekstLoadSaveTemplate {
+public class BroodjesTekstLoadSaveStrategy extends TekstLoadSaveTemplate implements LoadSaveStrategy{
     @Override
     public Object maakObject(String[] tokens) {
         String naam = tokens[0];

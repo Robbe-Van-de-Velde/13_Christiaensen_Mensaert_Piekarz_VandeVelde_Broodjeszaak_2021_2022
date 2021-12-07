@@ -8,6 +8,7 @@ import view.AdminView;
 import view.KitchenView;
 import view.OrderView;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -17,8 +18,8 @@ import java.io.IOException;
 public class BroodjeszaakMain extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-		// Als je met excel wilt laten dan voeg je in de constructor "xls" als je tekst wilt dan "txt"
-		BestelFacade facade = new BestelFacade("xls");
+		// om te kiezen tussen txt en excel load geef je de files mee en kies je tekst of excel in het laatste veld
+		BestelFacade facade = new BestelFacade(new File("src/bestanden/broodjes.xls"), new File("src/bestanden/beleg.xls"), "excel");
 
 		AdminViewController adcontroller = new AdminViewController(facade);
 		AdminView adminView = new AdminView(adcontroller);

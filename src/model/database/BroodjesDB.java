@@ -16,20 +16,15 @@ import java.util.TreeMap;
 public class BroodjesDB {
     private TreeMap<String, Broodje> broodjes;
 
-    public BroodjesDB() throws IOException {
+    /*public BroodjesDB() throws IOException {
         File belegbestand = new File("src/bestanden/broodjes.txt");
         this.broodjes = new TreeMap<>(new BroodjesTekstLoadSaveStrategy().load(belegbestand));
-    }
+    }*/
 
-    public BroodjesDB(String fileType) throws IOException {
-        File file = null;
-        if (fileType.equals("txt")){
-            file = new File("src/bestanden/broodjes.txt");
-            this.broodjes = new TreeMap<>(new BroodjesTekstLoadSaveStrategy().load(file));
-        } else if (fileType.equals("xls")){
-            file = new File("src/bestanden/broodjes.xls");
-            this.broodjes = new TreeMap<>(new BroodjesExcelLoadSaveStrategy().load(file));
-        }
+    public BroodjesDB(File file, String fileType) throws IOException {
+        String strategyNaam = fileType.toUpperCase() + "BROODJE";
+        LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.createLoadSaveStrategy(strategyNaam);
+        this.broodjes = new TreeMap<>(loadSaveStrategy.load(file));
     }
 
     public List<Broodje> getBroodjes() {
@@ -40,7 +35,8 @@ public class BroodjesDB {
         return result;
     }
 
-    public void save(File file, LoadSaveStrategy strategy){
-        strategy.save(file, this.broodjes);
+    public void save(File file, String strategy){
+        LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.createLoadSaveStrategy(strategy);
+        loadSaveStrategy.save(file, this.broodjes);
     }
 }

@@ -1,7 +1,21 @@
 package model.database.loadSaveStrategies;
 
+/**
+ * @author Robbe
+ */
+
 public class LoadSaveStrategyFactory {
-    public LoadSaveStrategy createLoadSaveStrategy(){
-        return null;
+    public static LoadSaveStrategy createLoadSaveStrategy(String strategyNaam){
+        LoadSaveStrategyEnum strategyEnum = LoadSaveStrategyEnum.valueOf(strategyNaam);
+        String classPath = strategyEnum.getPath();
+        LoadSaveStrategy strategy = null;
+        try {
+            Class dbClass = Class.forName(classPath);
+            Object dbObject = dbClass.newInstance();
+            strategy = (LoadSaveStrategy) dbObject;
+        } catch (Exception e){
+            throw new IllegalStateException("Problem with the factory");
+        }
+        return strategy;
     }
 }
