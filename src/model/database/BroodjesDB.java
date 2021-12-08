@@ -23,7 +23,7 @@ public class BroodjesDB {
 
     public BroodjesDB(File file, String fileType) throws IOException {
         String strategyNaam = fileType.toUpperCase() + "BROODJE";
-        LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.createLoadSaveStrategy(strategyNaam);
+        LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.getInstance().createLoadSaveStrategy(strategyNaam);
         this.broodjes = new TreeMap<>(loadSaveStrategy.load(file));
     }
 
@@ -36,7 +36,7 @@ public class BroodjesDB {
     }
 
     public void save(File file, String strategy){
-        LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.createLoadSaveStrategy(strategy);
+        LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.getInstance().createLoadSaveStrategy(strategy);
         loadSaveStrategy.save(file, this.broodjes);
     }
 }

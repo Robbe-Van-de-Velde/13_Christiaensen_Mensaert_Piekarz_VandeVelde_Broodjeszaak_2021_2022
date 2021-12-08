@@ -1,4 +1,10 @@
 package controller;
 
-public class OrderViewController {
+import model.Observer;
+
+public class OrderViewController implements Observer {
+    @Override
+    public void update() {
+
+    }
 }

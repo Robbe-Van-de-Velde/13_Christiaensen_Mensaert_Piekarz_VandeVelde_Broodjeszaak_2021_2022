@@ -5,7 +5,19 @@ package model.database.loadSaveStrategies;
  */
 
 public class LoadSaveStrategyFactory {
-    public static LoadSaveStrategy createLoadSaveStrategy(String strategyNaam){
+    private static LoadSaveStrategyFactory uniqueInstance;
+
+    private LoadSaveStrategyFactory() {
+    }
+
+    public static LoadSaveStrategyFactory getInstance(){
+        if (uniqueInstance == null){
+            uniqueInstance = new LoadSaveStrategyFactory();
+        }
+        return uniqueInstance;
+    }
+
+    public LoadSaveStrategy createLoadSaveStrategy(String strategyNaam){
         LoadSaveStrategyEnum strategyEnum = LoadSaveStrategyEnum.valueOf(strategyNaam);
         String classPath = strategyEnum.getPath();
         LoadSaveStrategy strategy = null;

@@ -27,7 +27,8 @@ public class BelegDB {
 
     public BelegDB(File file, String fileType) throws IOException {
         String strategyNaam = fileType.toUpperCase() + "BELEG";
-        LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.createLoadSaveStrategy(strategyNaam);
+        LoadSaveStrategyFactory factory = LoadSaveStrategyFactory.getInstance();
+        LoadSaveStrategy loadSaveStrategy = factory.createLoadSaveStrategy(strategyNaam);
         this.beleggen = new TreeMap<>(loadSaveStrategy.load(file));
     }
 
@@ -40,7 +41,7 @@ public class BelegDB {
     }
 
     public void save(File file, String strategy){
-        LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.createLoadSaveStrategy(strategy);
+        LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.getInstance().createLoadSaveStrategy(strategy);
         loadSaveStrategy.save(file, this.beleggen);
     }
 }

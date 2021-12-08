@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * @author Patryk, Robbe
+ */
+
 public class Broodje {
     String naam;
     int voorraad, verkocht;
@@ -32,5 +36,9 @@ public class Broodje {
     @Override
     public String toString() {
         return this.naam + " " + prijs + " " + voorraad;
+    }
+
+    public void aanpassenVoorraad(int aantal){
+        this.voorraad = aantal;
     }
 }

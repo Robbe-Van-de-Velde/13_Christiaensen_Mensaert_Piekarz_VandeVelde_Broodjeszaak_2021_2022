@@ -1,12 +1,9 @@
 package controller;
 
-import model.Beleg;
-import model.BestelFacade;
-import model.Broodje;
-import model.Observer;
+import model.*;
+import model.bestelling.BestellingEvents;
 import view.AdminView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +17,7 @@ public class AdminViewController implements Observer {
 
     public AdminViewController(BestelFacade model) {
         this.model = model;
-        model.addObserver(this);
+        model.addObserver(this, BestellingEvents.WIJZIGING_VOORRAAD);
     }
 
     @Override
