@@ -11,9 +11,11 @@ import javafx.stage.StageStyle;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
+import model.Beleg;
+import model.Broodje;
 
-import java.awt.*;
 import java.time.Clock;
+import java.util.List;
 
 public class OrderView {
 	private Stage stage = new Stage();		
@@ -25,7 +27,7 @@ public class OrderView {
 		stage.setY(20);
 		Group root = new Group();
 		Scene scene = new Scene(root, 650, 650);
-		Pane pane = createNodeHierarchy();
+		Pane pane = createNodeHierarchy(controller);
 		root.getChildren().add(pane);
 
 
@@ -34,7 +36,7 @@ public class OrderView {
 		stage.show();		
 	}
 
-	private Pane createNodeHierarchy(){
+	private Pane createNodeHierarchy(OrderViewController controller){
 		// panes maken
 		VBox p1 = new VBox(8);
 		VBox kolomKeuze = new VBox(8);
@@ -52,26 +54,24 @@ public class OrderView {
 		kolomKeuze.getChildren().add(kolomKeuzeBroodjes);
 		kolomKeuze.getChildren().add(kolomKeuzeBeleg);
 
-		//test buttons
-		Button button1 = new Button("broodje");
-		Button button2 = new Button("broodje");
-		Button button3 = new Button("broodje");
-		Button button4 = new Button("broodje");
-		Button button5 = new Button("broodje");
 
-		Button button7 = new Button("beleg");
-		Button button8 = new Button("beleg");
-		Button button9 = new Button("beleg");
+		//Alle broodjes
+		List<Broodje> broodjes = controller.getBroodjes();
+		for (Broodje broodje : broodjes) {
+			if (broodje.getVoorraad() > 0) {
+				Button button = new Button(broodje.getNaam());
+				kolomKeuzeBroodjes.getChildren().add(button);
+			}
+		}
 
-		kolomKeuzeBroodjes.getChildren().add(button1);
-		kolomKeuzeBroodjes.getChildren().add(button2);
-		kolomKeuzeBroodjes.getChildren().add(button3);
-		kolomKeuzeBroodjes.getChildren().add(button4);
-		kolomKeuzeBroodjes.getChildren().add(button5);
-
-		kolomKeuzeBeleg.getChildren().add(button7);
-		kolomKeuzeBeleg.getChildren().add(button8);
-		kolomKeuzeBeleg.getChildren().add(button9);
+		//Alle beleg
+		List<Beleg> beleggen = controller.getBeleggen();
+		for (Beleg beleg : beleggen) {
+			if (beleg.getVoorraad() > 0){
+				Button button = new Button(beleg.getNaam());
+				kolomKeuzeBeleg.getChildren().add(button);
+			}
+		}
 
 		return p1;
 	}

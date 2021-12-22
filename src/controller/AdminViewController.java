@@ -2,6 +2,8 @@ package controller;
 
 import model.*;
 import model.bestelling.BestellingEvents;
+import model.database.BelegDB;
+import model.database.BroodjesDB;
 import view.AdminView;
 
 import java.util.List;
@@ -20,11 +22,6 @@ public class AdminViewController implements Observer {
         model.addObserver(this, BestellingEvents.WIJZIGING_VOORRAAD);
     }
 
-    @Override
-    public void update() {
-
-    }
-
     public void setView(AdminView view){
         this.view = view;
     }
@@ -37,4 +34,8 @@ public class AdminViewController implements Observer {
         return model.getBeleggen();
     }
 
+    @Override
+    public void update(BelegDB belegDB, BroodjesDB broodjesDB) {
+
+    }
 }
