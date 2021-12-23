@@ -11,10 +11,15 @@ import java.util.List;
  */
 
 public class Bestelling {
+    private int volgnr;
     private BestellingState state;
     private BestellingState inWacht = new InWacht();
     private BestellingState inBestelling = new InBestelling();
     private List<Bestellijn> bestellijnen;
+
+    public int getVolgnr() {
+        return volgnr;
+    }
 
     public List getLijstBestellijnen(){
         return this.bestellijnen;
