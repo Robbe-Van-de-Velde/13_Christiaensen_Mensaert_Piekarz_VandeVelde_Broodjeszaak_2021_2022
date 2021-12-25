@@ -15,6 +15,7 @@ public class AdminView {
 	private Stage stage = new Stage();		
 		
 	public AdminView(AdminViewController controller){
+		controller.setView(this);
 		stage.setTitle("ADMIN VIEW");
 		stage.initStyle(StageStyle.UTILITY);
 		stage.setX(680);

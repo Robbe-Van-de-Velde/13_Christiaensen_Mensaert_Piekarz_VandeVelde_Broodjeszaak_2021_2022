@@ -4,6 +4,8 @@ import model.bestelling.state.BestellingState;
 import model.bestelling.state.InBestelling;
 import model.bestelling.state.InWacht;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +19,10 @@ public class Bestelling {
     private BestellingState inBestelling = new InBestelling();
     private List<Bestellijn> bestellijnen;
 
+    public Bestelling() {
+        this.bestellijnen = new ArrayList<>(0);
+    }
+
     public int getVolgnr() {
         return volgnr;
     }
@@ -25,7 +31,8 @@ public class Bestelling {
         return this.bestellijnen;
     }
 
-    public void voegBestellijnToe(String naamBroodje){
-
+    public void voegBestellijnToe(String naamBroodje) throws IOException {
+        Bestellijn bestellijn = new Bestellijn(naamBroodje);
+        this.bestellijnen.add(bestellijn);
     }
 }

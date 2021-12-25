@@ -8,5 +8,5 @@ import model.database.BroodjesDB;
  */
 
 public interface Observer {
-    void update(BelegDB belegDB, BroodjesDB broodjesDB);
+    void update();
 }

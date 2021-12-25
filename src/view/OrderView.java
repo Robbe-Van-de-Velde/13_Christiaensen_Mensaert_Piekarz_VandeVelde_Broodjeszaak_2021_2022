@@ -1,32 +1,53 @@
 package view;
 
 import controller.OrderViewController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import model.Beleg;
 import model.Broodje;
+import model.bestelling.Bestellijn;
 import model.comparators.BelegComparatorByNaam;
 import model.comparators.BroodjesComparatorByNaam;
 
-import java.time.Clock;
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+
+/**
+ * @author Robbe, Patryk
+ */
 
 public class OrderView {
+	private static int volgnr = 0;
 	private Stage stage = new Stage();
-	private Button nieuweBestellingButton, zelfdeBroodje, verwijderBroodje, annuleer, afsluiten, betaal, naarKeuken;
-		
+	private Button nieuweBestellingButton,
+			zelfdeBroodje,
+			verwijderBroodje,
+			annuleer,
+			afsluiten,
+			betaal,
+			naarKeuken;
+	private Label volgnrLabel;
+	private Pane kolomKeuze, kolomKeuzeBroodjes, kolomKeuzeBeleg;
+	private TableColumn<Bestellijn, String> colBroodje, colBeleg;
+	private TableView bestellijnTabel;
+	private OrderViewController controller;
+	private ObservableList<Bestellijn> bestellijnObservableList;
+
 	public OrderView(OrderViewController controller){
+		this.controller = controller;
+		this.controller.setView(this);
 		stage.setTitle("ORDER VIEW");
 		stage.initStyle(StageStyle.UTILITY);
 		stage.setX(20);
@@ -49,18 +70,18 @@ public class OrderView {
 		HBox eersteRij = new HBox(100);
 		eersteRij.setSpacing(200);
 		nieuweBestellingButton = new Button("Nieuwe bestelling");
-		//TODO nog implementeren nadat facade in orde is
-		Label volgnr = new Label("Volgnr: ");
+		nieuweBestellingButton.setOnAction(e -> nieuweBestelling());
+		volgnrLabel = new Label("Volgnr: ");
 		ChoiceBox promoties = new ChoiceBox();
 
-		eersteRij.getChildren().addAll(nieuweBestellingButton, volgnr, promoties);
+		eersteRij.getChildren().addAll(nieuweBestellingButton, volgnrLabel, promoties);
 
 		// kolomkeuze maken
-		VBox kolomKeuze = new VBox(15);
+		kolomKeuze = new VBox(15);
 		kolomKeuze.setPadding(new Insets(5,5,5,5));
 		kolomKeuze.setMinWidth(650);
-		HBox kolomKeuzeBroodjes = new HBox(15);
-		HBox kolomKeuzeBeleg = new HBox(15);
+		kolomKeuzeBroodjes = new HBox(15);
+		kolomKeuzeBeleg = new HBox(15);
 
 		kolomKeuze.setBackground(
 				new Background(
@@ -78,6 +99,14 @@ public class OrderView {
 		for (Broodje broodje : broodjes) {
 			if (broodje.getVoorraad() > 0) {
 				Button button = new Button(broodje.getNaam());
+				button.setOnAction(e -> {
+					try {
+						toevoegenBroodje(broodje.getNaam());
+					} catch (IOException ioException) {
+						ioException.printStackTrace();
+					}
+				});
+				button.setDisable(true);
 				kolomKeuzeBroodjes.getChildren().add(button);
 			}
 		}
@@ -88,6 +117,8 @@ public class OrderView {
 		for (Beleg beleg : beleggen) {
 			if (beleg.getVoorraad() > 0){
 				Button button = new Button(beleg.getNaam());
+				button.setOnAction(e -> addBeleg(beleg));
+				button.setDisable(true);
 				kolomKeuzeBeleg.getChildren().add(button);
 			}
 		}
@@ -102,18 +133,18 @@ public class OrderView {
 		//Rij 4
 		HBox rij4 = new HBox(15);
 		//Tabel
-		TableView broodjeTabel = new TableView();
-		broodjeTabel.setMaxHeight(375);
+		bestellijnTabel = new TableView();
+		bestellijnTabel.setMaxHeight(375);
 		//Broodje
-		TableColumn<Broodje, String> colBroodje = new TableColumn<Broodje, String>("Broodje");
+		colBroodje = new TableColumn<Bestellijn, String>("Broodje");
 		colBroodje.setMinWidth(150);
-		colBroodje.setCellValueFactory(new PropertyValueFactory<Broodje, String>("naam"));
+		colBroodje.setCellValueFactory(new PropertyValueFactory<Bestellijn, String>("naamBroodje"));
 		//Beleg
-		TableColumn<Beleg, String> colBeleg = new TableColumn<>("Beleg");
+		colBeleg = new TableColumn<>("Beleg");
 		colBeleg.setMinWidth(250);
-		colBeleg.setCellValueFactory(new PropertyValueFactory<Beleg, String>("naam"));
+		colBeleg.setCellValueFactory(new PropertyValueFactory<Bestellijn, String>("namenBeleg"));
 
-		broodjeTabel.getColumns().addAll(colBroodje, colBeleg);
+		bestellijnTabel.getColumns().addAll(colBroodje, colBeleg);
 
 		//Laatste kolom
 		VBox kolom2 = new VBox(15);
@@ -125,24 +156,30 @@ public class OrderView {
 		Label lijnLijst = new Label("Selecteer een lijn uit de lijst");
 		zelfdeBroodje = new Button("Voeg zelfde broodje toe");
 		verwijderBroodje = new Button("Verwijder broodje");
+		zelfdeBroodje.setDisable(true);
+		verwijderBroodje.setDisable(true);
 		buttonBox.getChildren().addAll(lijnLijst, zelfdeBroodje, verwijderBroodje);
 		buttonBox.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
 		buttonBox.setBorder(new Border(new BorderStroke(Color.BLACK,
 				BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 		//Annuleer button
 		annuleer = new Button("Annuleer bestelling");
+		annuleer.setDisable(true);
 
 		kolom2.getChildren().addAll(buttonBox, annuleer);
-		rij4.getChildren().addAll(broodjeTabel, kolom2);
+		rij4.getChildren().addAll(bestellijnTabel, kolom2);
 
 		//Rij 5
 		HBox rij5 = new HBox(15);
 		rij5.setPadding(new Insets(20,20,20,20));
 		afsluiten = new Button("Afsluiten bestelling");
+		afsluiten.setDisable(true);
 		Label teBetalen = new Label("Te betalen:");
 		Label prijs = new Label("5€ (placeholder)");
 		betaal = new Button("Betaal");
+		betaal.setDisable(true);
 		naarKeuken = new Button("Naar keuken");
+		naarKeuken.setDisable(true);
 		rij5.getChildren().addAll(afsluiten, teBetalen, prijs, betaal, naarKeuken);
 		rij5.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
 		rij5.setBorder(new Border(new BorderStroke(Color.BLACK,
@@ -152,6 +189,53 @@ public class OrderView {
 		mainPane.getChildren().addAll(eersteRij, kolomKeuze, rij3, rij4, rij5);
 
 		return mainPane;
+	}
+
+	public void toevoegenBroodje(String broodje) throws IOException {
+		controller.voegBestellijnToe(broodje);
+	}
+
+	public void addBeleg(Beleg beleg){
+		System.out.println(beleg.getNaam());
+	}
+
+	public void nieuweBestelling(){
+		this.volgnr++;
+		this.volgnrLabel.setText("Volgnr: " + volgnr);
+		nieuweBestellingButton.setDisable(true);
+		zelfdeBroodje.setDisable(false);
+		verwijderBroodje.setDisable(false);
+		annuleer.setDisable(false);
+		afsluiten.setDisable(false);
+
+		List<Node> broodjesChildren = kolomKeuzeBroodjes.getChildren();
+		for (Node broodje : broodjesChildren){
+			Button button = (Button) broodje;
+			button.setDisable(false);
+		}
+
+		List<Node> belegChildren = kolomKeuzeBeleg.getChildren();
+		for (Node beleg : belegChildren){
+			Button button = (Button) beleg;
+			button.setDisable(false);
+		}
+	}
+
+	public void updateBestellijnen(List<Bestellijn> bestellijnen){
+		bestellijnObservableList = FXCollections.observableArrayList(bestellijnen);
+		bestellijnTabel.setItems(bestellijnObservableList);
+		bestellijnTabel.refresh();
+	}
+
+	public void updateBroodjesKnoppen(Map<String, Integer> voorraadLijst){
+		List<Node> broodjesChildren = kolomKeuzeBroodjes.getChildren();
+		for (Node broodje : broodjesChildren){
+			Button button = (Button) broodje;
+			int voorraad = voorraadLijst.get(button.getText());
+			if (voorraad <= 0) {
+				button.setDisable(true);
+			}
+		}
 	}
 }
 

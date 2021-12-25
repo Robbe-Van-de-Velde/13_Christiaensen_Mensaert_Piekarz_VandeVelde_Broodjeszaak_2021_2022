@@ -4,11 +4,17 @@ import model.Beleg;
 import model.BestelFacade;
 import model.Broodje;
 import model.Observer;
-import model.database.BelegDB;
-import model.database.BroodjesDB;
+import model.bestelling.Bestellijn;
+import model.bestelling.BestellingEvents;
 import view.OrderView;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+
+/**
+ * @author Robbe
+ */
 
 public class OrderViewController implements Observer {
     private OrderView view;
@@ -16,6 +22,7 @@ public class OrderViewController implements Observer {
 
     public OrderViewController(BestelFacade facade) {
         this.model = facade;
+        model.addObserver(this, BestellingEvents.TOEVOEGEN_BROODJE);
     }
 
     public void setView(OrderView view){
@@ -30,9 +37,15 @@ public class OrderViewController implements Observer {
         return model.getBeleggen();
     }
 
+    public void voegBestellijnToe(String broodje) throws IOException {
+        model.voegBestellijnToe(broodje);
+    }
 
     @Override
-    public void update(BelegDB belegDB, BroodjesDB broodjesDB) {
-
+    public void update() {
+        List<Bestellijn> bestellijnen = model.getLijstBestellijnen();
+        view.updateBestellijnen(bestellijnen);
+        Map<String, Integer> voorraadLijst = model.getVoorraadlijstBroodjes();
+        view.updateBroodjesKnoppen(voorraadLijst);
     }
 }

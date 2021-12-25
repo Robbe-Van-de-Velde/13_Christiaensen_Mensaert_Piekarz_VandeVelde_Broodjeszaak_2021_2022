@@ -35,7 +35,7 @@ public class AdminViewController implements Observer {
     }
 
     @Override
-    public void update(BelegDB belegDB, BroodjesDB broodjesDB) {
+    public void update() {
 
     }
 }

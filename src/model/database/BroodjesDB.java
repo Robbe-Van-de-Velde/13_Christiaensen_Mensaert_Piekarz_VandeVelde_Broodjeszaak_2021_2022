@@ -5,9 +5,7 @@ import model.database.loadSaveStrategies.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * @author Patryk, Robbe
@@ -38,5 +36,17 @@ public class BroodjesDB {
     public void save(File file, String strategy){
         LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.getInstance().createLoadSaveStrategy(strategy);
         loadSaveStrategy.save(file, this.broodjes);
+    }
+
+    public Broodje getBroodje(String broodje){
+        return broodjes.get(broodje);
+    }
+
+    public Map<String, Integer> getVoorraadlijstBroodjes(){
+        HashMap<String, Integer> map = new HashMap<>();
+        for (Broodje broodje : this.broodjes.values()){
+            map.put(broodje.getNaam(), broodje.getVoorraad());
+        }
+        return map;
     }
 }

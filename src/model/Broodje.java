@@ -39,6 +39,6 @@ public class Broodje {
     }
 
     public void aanpassenVoorraad(int aantal){
-        this.voorraad = aantal;
+        this.voorraad = this.voorraad - aantal;
     }
 }
