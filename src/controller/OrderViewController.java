@@ -5,6 +5,7 @@ import model.BestelFacade;
 import model.Broodje;
 import model.Observer;
 import model.bestelling.Bestellijn;
+import model.bestelling.Bestelling;
 import model.bestelling.BestellingEvents;
 import view.OrderView;
 
@@ -39,13 +40,13 @@ public class OrderViewController implements Observer {
         return model.getBeleggen();
     }
 
-    public void voegBestellijnToe(String broodje) throws IOException {
-        model.voegBestellijnToe(broodje);
+    public void voegBestellijnToe(String broodje, Bestelling bestelling) throws IOException {
+        model.voegBestellijnToe(broodje, bestelling);
     }
 
     @Override
     public void update() {
-        List<Bestellijn> bestellijnen = model.getLijstBestellijnen();
+        List<Bestellijn> bestellijnen = model.getLijstBestellijnen(model.getBestellingByVolgnummer(view.getVolgnr()));
         view.updateBestellijnen(bestellijnen);
         Map<String, Integer> voorraadLijstBroodjes = model.getVoorraadlijstBroodjes();
         view.updateBroodjesKnoppen(voorraadLijstBroodjes);
@@ -53,19 +54,27 @@ public class OrderViewController implements Observer {
         view.updateBelegKnoppen(voorraadLijstBeleg);
     }
 
-    public void voegBelegToeAanBestellijn(Bestellijn bestellijn, String beleg) {
-        model.voegBelegToeAanBestellijn(bestellijn, beleg);
+    public void voegBelegToeAanBestellijn(Bestellijn bestellijn, String beleg, Bestelling bestelling) {
+        model.voegBelegToeAanBestellijn(bestellijn, beleg, bestelling);
     }
 
-    public void verwijderBestellijn(Bestellijn bestellijn) {
-        model.verwijderBestellijn(bestellijn);
+    public void verwijderBestellijn(Bestellijn bestellijn, Bestelling bestelling) {
+        model.verwijderBestellijn(bestellijn, bestelling);
     }
 
-    public void verwijderBestelling() {
-        model.verwijderBestelling();
+    public void verwijderBestelling(Bestelling bestelling) {
+        model.verwijderBestelling(bestelling);
     }
 
-    public void voegZelfdeBroodjeToe(Bestellijn bestellijn) throws IOException {
-        model.voegZelfdeBroodjeToe(bestellijn);
+    public void voegZelfdeBroodjeToe(Bestellijn bestellijn, Bestelling bestelling) throws IOException {
+        model.voegZelfdeBroodjeToe(bestellijn, bestelling);
+    }
+
+    public Bestelling voegBestellingToe() {
+        return model.voegBestellingToe();
+    }
+
+    public Bestelling getBestelling(int volgnr) {
+        return model.getBestellingByVolgnummer(volgnr);
     }
 }

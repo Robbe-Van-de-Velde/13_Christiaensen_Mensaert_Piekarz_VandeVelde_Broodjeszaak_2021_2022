@@ -17,6 +17,7 @@ import javafx.scene.paint.Color;
 import model.Beleg;
 import model.Broodje;
 import model.bestelling.Bestellijn;
+import model.bestelling.Bestelling;
 import model.comparators.BelegComparatorByNaam;
 import model.comparators.BroodjesComparatorByNaam;
 
@@ -29,7 +30,7 @@ import java.util.Map;
  */
 
 public class OrderView {
-	private static int volgnr = 0;
+	private int volgnr;
 	private Stage stage = new Stage();
 	private Button nieuweBestellingButton,
 			zelfdeBroodje,
@@ -50,6 +51,8 @@ public class OrderView {
 	public OrderView(OrderViewController controller){
 		this.controller = controller;
 		this.controller.setView(this);
+		Bestelling bestelling = controller.voegBestellingToe();
+		this.volgnr = bestelling.getVolgnr();
 		stage.setTitle("ORDER VIEW");
 		stage.initStyle(StageStyle.UTILITY);
 		stage.setX(20);
@@ -74,7 +77,7 @@ public class OrderView {
 		eersteRij.setSpacing(200);
 		nieuweBestellingButton = new Button("Nieuwe bestelling");
 		nieuweBestellingButton.setOnAction(e -> nieuweBestelling());
-		volgnrLabel = new Label("Volgnr: ");
+		volgnrLabel = new Label("Volgnr: " + this.volgnr);
 		ChoiceBox promoties = new ChoiceBox();
 
 		eersteRij.getChildren().addAll(nieuweBestellingButton, volgnrLabel, promoties);
@@ -204,7 +207,7 @@ public class OrderView {
 		Bestellijn bestellijn = (Bestellijn) bestellijnTabel.getSelectionModel().getSelectedItem();
 		if (bestellijn != null) {
 			try {
-				controller.voegZelfdeBroodjeToe(bestellijn);
+				controller.voegZelfdeBroodjeToe(bestellijn, controller.getBestelling(volgnr));
 			} catch (Exception e){
 				alert.setContentText("Er is niet genoeg voorraad om dit broodje terug toe te voegen");
 				alert.show();
@@ -218,7 +221,7 @@ public class OrderView {
 	private void verwijderBestellijn() {
 		Bestellijn bestellijn = (Bestellijn) bestellijnTabel.getSelectionModel().getSelectedItem();
 		if (bestellijn != null) {
-			controller.verwijderBestellijn(bestellijn);
+			controller.verwijderBestellijn(bestellijn, controller.getBestelling(volgnr));
 		} else {
 			alert.setContentText("Je moet een bestellijn selecteren voordat je een broodje kan verwijderen");
 			alert.show();
@@ -226,13 +229,13 @@ public class OrderView {
 	}
 
 	public void toevoegenBroodje(String broodje) throws IOException {
-		controller.voegBestellijnToe(broodje);
+		controller.voegBestellijnToe(broodje, controller.getBestelling(volgnr));
 	}
 
 	public void addBeleg(String beleg){
 		Bestellijn bestellijn = (Bestellijn) bestellijnTabel.getSelectionModel().getSelectedItem();
 		if (bestellijn != null) {
-			controller.voegBelegToeAanBestellijn(bestellijn, beleg);
+			controller.voegBelegToeAanBestellijn(bestellijn, beleg, controller.getBestelling(volgnr));
 		} else {
 			alert.setContentText("Je moet een bestellijn selecteren voordat je beleg kan toevoegen");
 			alert.show();
@@ -241,7 +244,6 @@ public class OrderView {
 
 	public void nieuweBestelling(){
 		actief = true;
-		this.volgnr++;
 		this.volgnrLabel.setText("Volgnr: " + volgnr);
 		nieuweBestellingButton.setDisable(true);
 		zelfdeBroodje.setDisable(false);
@@ -264,7 +266,6 @@ public class OrderView {
 
 	public void annuleerBestelling(){
 		actief = false;
-		this.volgnr--;
 		this.volgnrLabel.setText("Volgnr: ");
 		nieuweBestellingButton.setDisable(false);
 		zelfdeBroodje.setDisable(true);
@@ -283,8 +284,8 @@ public class OrderView {
 			Button button = (Button) beleg;
 			button.setDisable(true);
 		}
-
-		controller.verwijderBestelling();
+		controller.verwijderBestelling(controller.getBestelling(volgnr));
+		volgnr = controller.voegBestellingToe().getVolgnr();
 	}
 
 	public void updateBestellijnen(List<Bestellijn> bestellijnen){
@@ -317,6 +318,10 @@ public class OrderView {
 				button.setDisable(true);
 			}
 		}
+	}
+
+	public int getVolgnr() {
+		return volgnr;
 	}
 }
 

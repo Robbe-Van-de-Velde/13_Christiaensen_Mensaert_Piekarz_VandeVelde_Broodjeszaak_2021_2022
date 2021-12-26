@@ -2,9 +2,7 @@ package model.bestelling;
 
 import model.Beleg;
 import model.Broodje;
-import model.bestelling.state.BestellingState;
-import model.bestelling.state.InBestelling;
-import model.bestelling.state.InWacht;
+import model.bestelling.state.*;
 import model.database.BelegDB;
 import model.database.BroodjesDB;
 import model.database.DbException;
@@ -19,14 +17,27 @@ import java.util.List;
  */
 
 public class Bestelling {
-    private int volgnr;
-    private BestellingState state;
-    private BestellingState inWacht = new InWacht();
-    private BestellingState inBestelling = new InBestelling();
+    static int volgnr = 0;
+    private int volgnummer;
+    private BestellingState inWacht;
+    private BestellingState inBestelling;
+    private BestellingState afgesloten;
+    private BestellingState betaald;
+    private BestellingState inWachtrij;
+    private BestellingState inBereiding;
     private List<Bestellijn> bestellijnen;
 
+    private BestellingState state = inWacht;
+
+
     public Bestelling() {
+        this.volgnummer = volgnr;
+        volgnr++;
         this.bestellijnen = new ArrayList<>(0);
+
+        inWacht = new InWacht(this);
+        inBestelling = new InBestelling(this);
+        afgesloten = new Afgesloten(this);
     }
 
     public int getVolgnr() {
@@ -75,5 +86,45 @@ public class Bestelling {
             dubbeleBestellijn.voegBelegToe(beleg.getNaam(), belegDB);
         }
         this.bestellijnen.add(dubbeleBestellijn);
+    }
+
+    public BestellingState getState() {
+        return state;
+    }
+
+    public void changeState(BestellingState state){
+        this.state = state;
+    }
+
+    public int getVolgnummer() {
+        return volgnummer;
+    }
+
+    public BestellingState getInWacht() {
+        return inWacht;
+    }
+
+    public BestellingState getInBestelling() {
+        return inBestelling;
+    }
+
+    public BestellingState getAfgesloten() {
+        return afgesloten;
+    }
+
+    public BestellingState getBetaald() {
+        return betaald;
+    }
+
+    public BestellingState getInWachtrij() {
+        return inWachtrij;
+    }
+
+    public BestellingState getInBereiding() {
+        return inBereiding;
+    }
+
+    public List<Bestellijn> getBestellijnen() {
+        return bestellijnen;
     }
 }

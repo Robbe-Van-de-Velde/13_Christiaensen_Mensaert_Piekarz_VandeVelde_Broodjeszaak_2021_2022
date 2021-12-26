@@ -1,8 +1,66 @@
 package model.bestelling.state;
 
-public class InBereiding implements BestellingState {
-    @Override
-    public void voegBestellingToe(String naamBroodje) {
+import model.bestelling.Bestelling;
 
+public class InBereiding implements BestellingState {
+    Bestelling bestelling;
+
+    public InBereiding(Bestelling bestelling) {
+        this.bestelling = bestelling;
+    }
+
+    @Override
+    public void startBestelling() {
+        System.out.println("doet niets");
+    }
+
+    @Override
+    public void toevoegenBroodje() {
+        System.out.println("doet niets");
+    }
+
+    @Override
+    public void verwijderBroodje() {
+        System.out.println("doet niets");
+    }
+
+    @Override
+    public void toevoegenIdentiekBroodje() {
+        System.out.println("doet niets");
+    }
+
+    @Override
+    public void toevoegenBeleg() {
+        System.out.println("doet niets");
+    }
+
+    @Override
+    public void afsluiten() {
+        System.out.println("doet niets");
+    }
+
+    @Override
+    public void annuleren() {
+        System.out.println("doet niets");
+    }
+
+    @Override
+    public void betalen() {
+        System.out.println("doet niets");
+    }
+
+    @Override
+    public void zendNaarKeuken() {
+        System.out.println("doet niets");
+    }
+
+    @Override
+    public void startBereiding() {
+        System.out.println("doet niets");
+    }
+
+    @Override
+    public void afgewerkt() {
+        //TODO
     }
 }

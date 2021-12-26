@@ -17,7 +17,7 @@ public class BestelFacade implements Subject {
     private BelegDB belegDB;
     private BroodjesDB broodjesDB;
     private Map<BestellingEvents, List<Observer>> observers;
-    private Bestelling bestelling;
+    private List<Bestelling> bestellingen;
 
     public BestelFacade(File broodjesFile, File belegFile, String fileType) throws IOException {
         this.belegDB = new BelegDB(belegFile, fileType);
@@ -26,7 +26,7 @@ public class BestelFacade implements Subject {
         for (BestellingEvents event : BestellingEvents.values()){
             this.observers.put(event, new ArrayList<>());
         }
-        this.bestelling = new Bestelling();
+        this.bestellingen = new ArrayList<>();
     }
 
     @Override
@@ -56,15 +56,15 @@ public class BestelFacade implements Subject {
         return belegDB.getBeleggen();
     }
 
-    public Bestelling getBestelling() {
-        return bestelling;
+    public List<Bestelling> getBestellingen() {
+        return bestellingen;
     }
 
-    public List<Bestellijn> getLijstBestellijnen(){
-        return this.bestelling.getLijstBestellijnen();
+    public List<Bestellijn> getLijstBestellijnen(Bestelling bestelling){
+        return bestelling.getLijstBestellijnen();
     }
 
-    public void voegBestellijnToe(String broodje) throws IOException {
+    public void voegBestellijnToe(String broodje, Bestelling bestelling) throws IOException {
         bestelling.voegBestellijnToe(broodje, broodjesDB);
 
         notifyObservers(BestellingEvents.TOEVOEGEN_BROODJE);
@@ -83,7 +83,7 @@ public class BestelFacade implements Subject {
         return broodjesDB;
     }
 
-    public void voegBelegToeAanBestellijn(Bestellijn bestellijn, String beleg) {
+    public void voegBelegToeAanBestellijn(Bestellijn bestellijn, String beleg, Bestelling bestelling) {
         bestelling.voegBelegToeAanBestellijn(bestellijn, beleg, belegDB);
 
         notifyObservers(BestellingEvents.TOEVOEGEN_BELEG);
@@ -94,15 +94,15 @@ public class BestelFacade implements Subject {
         return belegDB.getVoorraadlijstBeleg();
     }
 
-    public void verwijderBestellijn(Bestellijn bestellijn) {
+    public void verwijderBestellijn(Bestellijn bestellijn, Bestelling bestelling) {
         bestelling.verwijderBestellijn(bestellijn);
 
         notifyObservers(BestellingEvents.VERWIJDER_BROODJE);
         notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
     }
 
-    public void verwijderBestelling() {
-        Iterator<Bestellijn> iterator = getLijstBestellijnen().iterator();
+    public void verwijderBestelling(Bestelling bestelling) {
+        Iterator<Bestellijn> iterator = getLijstBestellijnen(bestelling).iterator();
         while (iterator.hasNext()){
             Bestellijn bestellijn = iterator.next();
             bestellijn.maakKlaarOmVerwijderdTeWorden();
@@ -112,10 +112,26 @@ public class BestelFacade implements Subject {
         notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
     }
 
-    public void voegZelfdeBroodjeToe(Bestellijn bestellijn) throws IOException {
+    public void voegZelfdeBroodjeToe(Bestellijn bestellijn, Bestelling bestelling) throws IOException {
         bestelling.voegZelfdeBroodjeToe(bestellijn, broodjesDB, belegDB);
 
         notifyObservers(BestellingEvents.TOEVOEGEN_BELEG);
         notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
+    }
+
+    public Bestelling getBestellingByVolgnummer(int volgnummer){
+        Bestelling bestelling = null;
+        for (Bestelling b : bestellingen){
+            if (b.getVolgnr() == volgnummer){
+                bestelling = b;
+            }
+        }
+        return bestelling;
+    }
+
+    public Bestelling voegBestellingToe() {
+        Bestelling bestelling = new Bestelling();
+        this.bestellingen.add(bestelling);
+        return bestelling;
     }
 }
