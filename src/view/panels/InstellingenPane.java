@@ -69,9 +69,11 @@ public class InstellingenPane extends Pane {
             if (saveStrategy.equals("excel")) {
                 properties.setProperty("broodjesFile", "src/bestanden/broodjes.xls");
                 properties.setProperty("belegFile", "src/bestanden/beleg.xls");
+                properties.setProperty("fileType", "excel");
             } else if (saveStrategy.equals("tekst")){
                 properties.setProperty("broodjesFile", "src/bestanden/broodjes.txt");
                 properties.setProperty("belegFile", "src/bestanden/beleg.txt");
+                properties.setProperty("fileType", "tekst");
             }
             properties.store(os, "save strategie");
             os.close();

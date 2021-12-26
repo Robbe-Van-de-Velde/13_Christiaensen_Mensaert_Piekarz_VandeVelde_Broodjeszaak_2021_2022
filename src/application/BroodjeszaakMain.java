@@ -20,7 +20,7 @@ public class BroodjeszaakMain extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		// om te kiezen tussen txt en excel load geef je de files mee en kies je tekst of excel in het laatste veld
-		BestelFacade facade = new BestelFacade(new File("src/bestanden/broodjes.xls"), new File("src/bestanden/beleg.xls"), "excel");
+		BestelFacade facade = new BestelFacade();
 
 		AdminViewController adcontroller = new AdminViewController(facade);
 		AdminView adminView = new AdminView(adcontroller);

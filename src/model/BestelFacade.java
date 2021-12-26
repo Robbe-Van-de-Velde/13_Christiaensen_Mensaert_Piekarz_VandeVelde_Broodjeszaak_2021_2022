@@ -7,7 +7,9 @@ import model.database.BelegDB;
 import model.database.BroodjesDB;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -19,7 +21,17 @@ public class BestelFacade implements Subject {
     private Map<BestellingEvents, List<Observer>> observers;
     private List<Bestelling> bestellingen;
 
-    public BestelFacade(File broodjesFile, File belegFile, String fileType) throws IOException {
+    public BestelFacade() throws IOException {
+        Properties properties = new Properties();
+        InputStream is = new FileInputStream("src/bestanden/settings.properties");
+        properties.load(is);
+        String broodjesFileLocatie = properties.getProperty("broodjesFile");
+        String belegFileLocatie = properties.getProperty("belegFile");
+        File broodjesFile = new File(broodjesFileLocatie);
+        File belegFile = new File(belegFileLocatie);
+        String fileType = properties.getProperty("fileType");
+        is.close();
+
         this.belegDB = new BelegDB(belegFile, fileType);
         this.broodjesDB = new BroodjesDB(broodjesFile, fileType);
         this.observers = new HashMap<>();
