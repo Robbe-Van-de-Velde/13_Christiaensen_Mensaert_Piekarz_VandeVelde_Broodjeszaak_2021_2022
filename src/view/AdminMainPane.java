@@ -7,10 +7,16 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import view.panels.SandwichOverviewPane;
 
+/**
+ * @author Robbe
+ */
+
 public class AdminMainPane extends BorderPane {
+    private SandwichOverviewPane sandwichOverviewPane;
+
 	public AdminMainPane(AdminViewController controller){
 	    TabPane tabPane = new TabPane();
-        SandwichOverviewPane sandwichOverviewPane = new SandwichOverviewPane(controller);
+        sandwichOverviewPane = new SandwichOverviewPane(controller);
         Tab broodjesTab = new Tab("Broodjes/Beleg",sandwichOverviewPane);
         Tab instellingTab = new Tab("Instellingen");
         Tab statistiekTab = new Tab("Statistieken");
@@ -19,4 +25,9 @@ public class AdminMainPane extends BorderPane {
         tabPane.getTabs().add(instellingTab);
         this.setCenter(tabPane);
 	}
+
+	public void updateVoorraad(){
+	    this.sandwichOverviewPane.refreshBroodjes();
+	    this.sandwichOverviewPane.refreshBeleggen();
+    }
 }

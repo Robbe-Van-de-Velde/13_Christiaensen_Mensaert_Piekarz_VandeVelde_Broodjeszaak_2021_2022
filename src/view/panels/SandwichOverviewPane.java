@@ -28,10 +28,12 @@ public class SandwichOverviewPane extends GridPane{
 	private ObservableList<Beleg> beleggenList;
 	private TableView<Broodje> broodjesTabel;
 	private TableView<Beleg> belegTabel;
+	private AdminViewController controller;
 	
 	public SandwichOverviewPane(AdminViewController controller) {
 		this.broodjes = controller.getBroodjes();
 		this.beleggen = controller.getBeleggen();
+		this.controller = controller;
 
 		this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
@@ -78,13 +80,15 @@ public class SandwichOverviewPane extends GridPane{
 		this.add(belegTabel, 0,3,1,1);
 	}
 
-	private void refreshBeleggen() {
+	public void refreshBeleggen() {
+		this.beleggen = controller.getBeleggen();
 		beleggenList = FXCollections.observableList(this.beleggen);
 		belegTabel.setItems(beleggenList);
 		belegTabel.refresh();
 	}
 
 	public void refreshBroodjes() {
+		this.broodjes = controller.getBroodjes();
 		broodjesList = FXCollections.observableArrayList(this.broodjes);
 		broodjesTabel.setItems(broodjesList);
 		broodjesTabel.refresh();

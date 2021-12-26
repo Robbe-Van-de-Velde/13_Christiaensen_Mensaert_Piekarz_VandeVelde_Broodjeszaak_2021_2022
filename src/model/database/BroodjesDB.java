@@ -44,9 +44,13 @@ public class BroodjesDB {
 
     public Map<String, Integer> getVoorraadlijstBroodjes(){
         HashMap<String, Integer> map = new HashMap<>();
-        for (Broodje broodje : this.broodjes.values()){
+        for (Broodje broodje : getBroodjes()){
             map.put(broodje.getNaam(), broodje.getVoorraad());
         }
         return map;
+    }
+
+    public void updateBroodjesVoorraad(Broodje broodje){
+        this.broodjes.put(broodje.getNaam(), broodje);
     }
 }

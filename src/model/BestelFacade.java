@@ -68,11 +68,21 @@ public class BestelFacade implements Subject {
     }
 
     public void voegBestellijnToe(String broodje) throws IOException {
-        bestelling.voegBestellijnToe(broodje);
+        bestelling.voegBestellijnToe(broodje, broodjesDB);
+
         notifyObservers(BestellingEvents.TOEVOEGEN_BROODJE);
+        notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
     }
 
     public Map<String, Integer> getVoorraadlijstBroodjes(){
         return broodjesDB.getVoorraadlijstBroodjes();
+    }
+
+    public BelegDB getBelegDB() {
+        return belegDB;
+    }
+
+    public BroodjesDB getBroodjesDB() {
+        return broodjesDB;
     }
 }

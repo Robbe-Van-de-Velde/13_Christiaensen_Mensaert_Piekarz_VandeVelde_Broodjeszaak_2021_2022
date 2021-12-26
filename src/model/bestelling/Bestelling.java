@@ -3,6 +3,7 @@ package model.bestelling;
 import model.bestelling.state.BestellingState;
 import model.bestelling.state.InBestelling;
 import model.bestelling.state.InWacht;
+import model.database.BroodjesDB;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,8 +32,8 @@ public class Bestelling {
         return this.bestellijnen;
     }
 
-    public void voegBestellijnToe(String naamBroodje) throws IOException {
-        Bestellijn bestellijn = new Bestellijn(naamBroodje);
+    public void voegBestellijnToe(String naamBroodje, BroodjesDB broodjesDB) throws IOException {
+        Bestellijn bestellijn = new Bestellijn(naamBroodje, broodjesDB);
         this.bestellijnen.add(bestellijn);
     }
 }

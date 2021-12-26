@@ -34,8 +34,10 @@ public class AdminViewController implements Observer {
         return model.getBeleggen();
     }
 
+
+
     @Override
     public void update() {
-
+        this.view.updateVoorraad();
     }
 }
