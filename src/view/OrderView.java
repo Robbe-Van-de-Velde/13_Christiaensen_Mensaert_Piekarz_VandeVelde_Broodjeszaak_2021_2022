@@ -156,9 +156,10 @@ public class OrderView {
 
 		buttonBox.setPadding(new Insets(20,20,20,20));
 		Label lijnLijst = new Label("Selecteer een lijn uit de lijst");
-		//TODO story 5
+
 		zelfdeBroodje = new Button("Voeg zelfde broodje toe");
 		zelfdeBroodje.setDisable(true);
+		zelfdeBroodje.setOnAction(e -> voegZelfdeBroodjeToe());
 
 		verwijderBroodje = new Button("Verwijder broodje");
 		verwijderBroodje.setDisable(true);
@@ -196,6 +197,21 @@ public class OrderView {
 		mainPane.getChildren().addAll(eersteRij, kolomKeuze, rij3, rij4, rij5);
 
 		return mainPane;
+	}
+
+	private void voegZelfdeBroodjeToe() {
+		Bestellijn bestellijn = (Bestellijn) bestellijnTabel.getSelectionModel().getSelectedItem();
+		if (bestellijn != null) {
+			try {
+				controller.voegZelfdeBroodjeToe(bestellijn);
+			} catch (Exception e){
+				alert.setContentText("Er is niet genoeg voorraad om dit broodje terug toe te voegen");
+				alert.show();
+			}
+		}else {
+			alert.setContentText("Je moet een bestellijn selecteren voordat je een eenzelfde broodje kan toevoegen");
+			alert.show();
+		}
 	}
 
 	private void verwijderBestellijn() {

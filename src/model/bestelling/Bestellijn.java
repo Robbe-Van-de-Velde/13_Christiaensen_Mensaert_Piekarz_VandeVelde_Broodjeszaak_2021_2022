@@ -63,6 +63,10 @@ public class Bestellijn {
         }
     }
 
+    public Broodje getBroodje() {
+        return broodje;
+    }
+
     @Override
     public String toString() {
         return "Bestellijn{" +

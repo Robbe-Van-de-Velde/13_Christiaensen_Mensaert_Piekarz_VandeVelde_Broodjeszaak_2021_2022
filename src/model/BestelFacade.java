@@ -111,4 +111,11 @@ public class BestelFacade implements Subject {
         notifyObservers(BestellingEvents.VERWIJDER_BROODJE);
         notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
     }
+
+    public void voegZelfdeBroodjeToe(Bestellijn bestellijn) throws IOException {
+        bestelling.voegZelfdeBroodjeToe(bestellijn, broodjesDB, belegDB);
+
+        notifyObservers(BestellingEvents.TOEVOEGEN_BELEG);
+        notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
+    }
 }

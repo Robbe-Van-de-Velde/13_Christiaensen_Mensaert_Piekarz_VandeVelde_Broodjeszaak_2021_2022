@@ -64,4 +64,8 @@ public class OrderViewController implements Observer {
     public void verwijderBestelling() {
         model.verwijderBestelling();
     }
+
+    public void voegZelfdeBroodjeToe(Bestellijn bestellijn) throws IOException {
+        model.voegZelfdeBroodjeToe(bestellijn);
+    }
 }

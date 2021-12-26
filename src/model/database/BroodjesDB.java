@@ -50,7 +50,23 @@ public class BroodjesDB {
         return map;
     }
 
+    public Map<String, Integer> getVoorraadlijstBroodje(String broodjesNaam){
+        HashMap<String, Integer> map = new HashMap<>();
+        Broodje broodje = getBroodje(broodjesNaam);
+        map.put(broodjesNaam, broodje.getVoorraad());
+        return map;
+    }
+
     public void updateBroodjesVoorraad(Broodje broodje){
         this.broodjes.put(broodje.getNaam(), broodje);
+    }
+
+    public boolean checkOfErGenoegVoorraadIs(String broodjesnaam) {
+        Broodje broodje = getBroodje(broodjesnaam);
+        if (broodje.getVoorraad() < 1){
+            return false;
+        } else {
+            return true;
+        }
     }
 }
