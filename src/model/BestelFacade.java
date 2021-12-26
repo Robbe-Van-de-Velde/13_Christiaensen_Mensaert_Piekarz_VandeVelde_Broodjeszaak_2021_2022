@@ -85,4 +85,15 @@ public class BestelFacade implements Subject {
     public BroodjesDB getBroodjesDB() {
         return broodjesDB;
     }
+
+    public void voegBelegToeAanBestellijn(Bestellijn bestellijn, String beleg) {
+        bestelling.voegBelegToeAanBestellijn(bestellijn, beleg, belegDB);
+
+        notifyObservers(BestellingEvents.TOEVOEGEN_BELEG);
+        notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
+    }
+
+    public Map<String, Integer> getVoorraadlijstBeleg(){
+        return belegDB.getVoorraadlijstBeleg();
+    }
 }

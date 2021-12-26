@@ -44,6 +44,7 @@ public class OrderView {
 	private TableView bestellijnTabel;
 	private OrderViewController controller;
 	private ObservableList<Bestellijn> bestellijnObservableList;
+	private Alert alert = new Alert(Alert.AlertType.ERROR);
 
 	public OrderView(OrderViewController controller){
 		this.controller = controller;
@@ -117,7 +118,7 @@ public class OrderView {
 		for (Beleg beleg : beleggen) {
 			if (beleg.getVoorraad() > 0){
 				Button button = new Button(beleg.getNaam());
-				button.setOnAction(e -> addBeleg(beleg));
+				button.setOnAction(e -> addBeleg(beleg.getNaam()));
 				button.setDisable(true);
 				kolomKeuzeBeleg.getChildren().add(button);
 			}
@@ -195,8 +196,14 @@ public class OrderView {
 		controller.voegBestellijnToe(broodje);
 	}
 
-	public void addBeleg(Beleg beleg){
-		System.out.println(beleg.getNaam());
+	public void addBeleg(String beleg){
+		Bestellijn bestellijn = (Bestellijn) bestellijnTabel.getSelectionModel().getSelectedItem();
+		if (bestellijn != null) {
+			controller.voegBelegToeAanBestellijn(bestellijn, beleg);
+		} else {
+			alert.setContentText("Je moet een bestellijn selecteren voordat je beleg kan toevoegen");
+			alert.show();
+		}
 	}
 
 	public void nieuweBestelling(){
@@ -233,6 +240,17 @@ public class OrderView {
 			Button button = (Button) broodje;
 			int voorraad = voorraadLijst.get(button.getText());
 			if (voorraad <= 0) {
+				button.setDisable(true);
+			}
+		}
+	}
+
+	public void updateBelegKnoppen(Map<String, Integer> voorraadLijstBeleg) {
+		List<Node> belegChildren = kolomKeuzeBeleg.getChildren();
+		for (Node beleg : belegChildren){
+			Button button = (Button) beleg;
+			int voorraad = voorraadLijstBeleg.get(button.getText());
+			if (voorraad <= 0){
 				button.setDisable(true);
 			}
 		}

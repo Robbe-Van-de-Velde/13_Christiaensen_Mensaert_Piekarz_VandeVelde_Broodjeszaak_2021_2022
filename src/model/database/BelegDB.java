@@ -9,9 +9,7 @@ import model.database.loadSaveStrategies.LoadSaveStrategyFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * @author Patryk, Robbe
@@ -43,5 +41,17 @@ public class BelegDB {
     public void save(File file, String strategy){
         LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.getInstance().createLoadSaveStrategy(strategy);
         loadSaveStrategy.save(file, this.beleggen);
+    }
+
+    public Map<String, Integer> getVoorraadlijstBeleg(){
+        HashMap<String, Integer> map = new HashMap<>();
+        for (Beleg beleg : getBeleggen()){
+            map.put(beleg.getNaam(), beleg.getVoorraad());
+        }
+        return map;
+    }
+
+    public Beleg getBeleg(String belegnaam){
+        return this.beleggen.get(belegnaam);
     }
 }

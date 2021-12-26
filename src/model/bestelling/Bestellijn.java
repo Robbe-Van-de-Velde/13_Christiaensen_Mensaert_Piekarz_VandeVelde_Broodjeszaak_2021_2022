@@ -2,6 +2,7 @@ package model.bestelling;
 
 import model.Beleg;
 import model.Broodje;
+import model.database.BelegDB;
 import model.database.BroodjesDB;
 
 import java.io.File;
@@ -18,6 +19,7 @@ public class Bestellijn {
     private Broodje broodje;
     private List<Beleg> beleggen;
     private BroodjesDB broodjesDB;
+    private BelegDB belegDB;
 
     public Bestellijn(String naamBroodje, BroodjesDB broodjesDB) throws IOException {
         this.naamBroodje = naamBroodje;
@@ -34,7 +36,10 @@ public class Bestellijn {
     public String getNamenBeleg(){
         String result = "";
         for (Beleg beleg: beleggen) {
-            result += beleg.getNaam() + ",";
+            result += beleg.getNaam() + ", ";
+        }
+        if (!result.equals("")){
+            result = result.replaceAll(", $", "");
         }
         this.namenBeleg = result;
         return result;
@@ -44,7 +49,21 @@ public class Bestellijn {
         return beleggen;
     }
 
-    public void addBelegToBestellijn(Beleg beleg){
+    public void voegBelegToe(String belegnaam, BelegDB belegDB){
+        this.belegDB = belegDB;
+        Beleg beleg = belegDB.getBeleg(belegnaam);
         this.beleggen.add(beleg);
+        beleg.aanpassenVoorraad(1);
+    }
+
+    @Override
+    public String toString() {
+        return "Bestellijn{" +
+                "naamBroodje='" + naamBroodje + '\'' +
+                ", namenBeleg='" + namenBeleg + '\'' +
+                ", broodje=" + broodje +
+                ", beleggen=" + beleggen +
+                ", broodjesDB=" + broodjesDB +
+                '}';
     }
 }

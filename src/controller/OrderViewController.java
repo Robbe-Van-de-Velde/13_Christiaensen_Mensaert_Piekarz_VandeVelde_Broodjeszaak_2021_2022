@@ -23,6 +23,7 @@ public class OrderViewController implements Observer {
     public OrderViewController(BestelFacade facade) {
         this.model = facade;
         model.addObserver(this, BestellingEvents.TOEVOEGEN_BROODJE);
+        model.addObserver(this, BestellingEvents.TOEVOEGEN_BELEG);
     }
 
     public void setView(OrderView view){
@@ -45,7 +46,13 @@ public class OrderViewController implements Observer {
     public void update() {
         List<Bestellijn> bestellijnen = model.getLijstBestellijnen();
         view.updateBestellijnen(bestellijnen);
-        Map<String, Integer> voorraadLijst = model.getVoorraadlijstBroodjes();
-        view.updateBroodjesKnoppen(voorraadLijst);
+        Map<String, Integer> voorraadLijstBroodjes = model.getVoorraadlijstBroodjes();
+        view.updateBroodjesKnoppen(voorraadLijstBroodjes);
+        Map<String, Integer> voorraadLijstBeleg = model.getVoorraadlijstBeleg();
+        view.updateBelegKnoppen(voorraadLijstBeleg);
+    }
+
+    public void voegBelegToeAanBestellijn(Bestellijn bestellijn, String beleg) {
+        model.voegBelegToeAanBestellijn(bestellijn, beleg);
     }
 }

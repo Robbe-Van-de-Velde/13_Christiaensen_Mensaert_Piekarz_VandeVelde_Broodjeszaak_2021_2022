@@ -36,4 +36,8 @@ public class Beleg {
     public String toString() {
         return this.naam + " " + prijs + " " + voorraad;
     }
+
+    public void aanpassenVoorraad(int aantal){
+        this.voorraad = this.voorraad - aantal;
+    }
 }
