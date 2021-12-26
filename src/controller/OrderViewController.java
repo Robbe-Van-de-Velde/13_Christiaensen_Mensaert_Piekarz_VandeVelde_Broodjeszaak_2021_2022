@@ -24,6 +24,7 @@ public class OrderViewController implements Observer {
         this.model = facade;
         model.addObserver(this, BestellingEvents.TOEVOEGEN_BROODJE);
         model.addObserver(this, BestellingEvents.TOEVOEGEN_BELEG);
+        model.addObserver(this, BestellingEvents.VERWIJDER_BROODJE);
     }
 
     public void setView(OrderView view){
@@ -54,5 +55,13 @@ public class OrderViewController implements Observer {
 
     public void voegBelegToeAanBestellijn(Bestellijn bestellijn, String beleg) {
         model.voegBelegToeAanBestellijn(bestellijn, beleg);
+    }
+
+    public void verwijderBestellijn(Bestellijn bestellijn) {
+        model.verwijderBestellijn(bestellijn);
+    }
+
+    public void verwijderBestelling() {
+        model.verwijderBestelling();
     }
 }

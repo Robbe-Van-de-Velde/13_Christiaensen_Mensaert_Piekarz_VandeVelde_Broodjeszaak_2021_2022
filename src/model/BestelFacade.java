@@ -8,10 +8,7 @@ import model.database.BroodjesDB;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Robbe
@@ -95,5 +92,23 @@ public class BestelFacade implements Subject {
 
     public Map<String, Integer> getVoorraadlijstBeleg(){
         return belegDB.getVoorraadlijstBeleg();
+    }
+
+    public void verwijderBestellijn(Bestellijn bestellijn) {
+        bestelling.verwijderBestellijn(bestellijn);
+
+        notifyObservers(BestellingEvents.VERWIJDER_BROODJE);
+        notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
+    }
+
+    public void verwijderBestelling() {
+        Iterator<Bestellijn> iterator = getLijstBestellijnen().iterator();
+        while (iterator.hasNext()){
+            Bestellijn bestellijn = iterator.next();
+            bestellijn.maakKlaarOmVerwijderdTeWorden();
+            iterator.remove();
+        }
+        notifyObservers(BestellingEvents.VERWIJDER_BROODJE);
+        notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
     }
 }

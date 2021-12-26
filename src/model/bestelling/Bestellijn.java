@@ -56,6 +56,13 @@ public class Bestellijn {
         beleg.aanpassenVoorraad(1);
     }
 
+    public void maakKlaarOmVerwijderdTeWorden(){
+        this.broodje.aanpassenVoorraad(-1);
+        for (Beleg beleg : beleggen){
+            beleg.aanpassenVoorraad(-1);
+        }
+    }
+
     @Override
     public String toString() {
         return "Bestellijn{" +

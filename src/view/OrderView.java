@@ -45,6 +45,7 @@ public class OrderView {
 	private OrderViewController controller;
 	private ObservableList<Bestellijn> bestellijnObservableList;
 	private Alert alert = new Alert(Alert.AlertType.ERROR);
+	private boolean actief = false;
 
 	public OrderView(OrderViewController controller){
 		this.controller = controller;
@@ -155,10 +156,14 @@ public class OrderView {
 
 		buttonBox.setPadding(new Insets(20,20,20,20));
 		Label lijnLijst = new Label("Selecteer een lijn uit de lijst");
+		//TODO story 5
 		zelfdeBroodje = new Button("Voeg zelfde broodje toe");
-		verwijderBroodje = new Button("Verwijder broodje");
 		zelfdeBroodje.setDisable(true);
+
+		verwijderBroodje = new Button("Verwijder broodje");
 		verwijderBroodje.setDisable(true);
+		verwijderBroodje.setOnAction(e -> verwijderBestellijn());
+
 		buttonBox.getChildren().addAll(lijnLijst, zelfdeBroodje, verwijderBroodje);
 		buttonBox.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
 		buttonBox.setBorder(new Border(new BorderStroke(Color.BLACK,
@@ -166,6 +171,7 @@ public class OrderView {
 		//Annuleer button
 		annuleer = new Button("Annuleer bestelling");
 		annuleer.setDisable(true);
+		annuleer.setOnAction(e -> annuleerBestelling());
 
 		kolom2.getChildren().addAll(buttonBox, annuleer);
 		rij4.getChildren().addAll(bestellijnTabel, kolom2);
@@ -192,6 +198,16 @@ public class OrderView {
 		return mainPane;
 	}
 
+	private void verwijderBestellijn() {
+		Bestellijn bestellijn = (Bestellijn) bestellijnTabel.getSelectionModel().getSelectedItem();
+		if (bestellijn != null) {
+			controller.verwijderBestellijn(bestellijn);
+		} else {
+			alert.setContentText("Je moet een bestellijn selecteren voordat je een broodje kan verwijderen");
+			alert.show();
+		}
+	}
+
 	public void toevoegenBroodje(String broodje) throws IOException {
 		controller.voegBestellijnToe(broodje);
 	}
@@ -207,6 +223,7 @@ public class OrderView {
 	}
 
 	public void nieuweBestelling(){
+		actief = true;
 		this.volgnr++;
 		this.volgnrLabel.setText("Volgnr: " + volgnr);
 		nieuweBestellingButton.setDisable(true);
@@ -228,6 +245,31 @@ public class OrderView {
 		}
 	}
 
+	public void annuleerBestelling(){
+		actief = false;
+		this.volgnr--;
+		this.volgnrLabel.setText("Volgnr: ");
+		nieuweBestellingButton.setDisable(false);
+		zelfdeBroodje.setDisable(true);
+		verwijderBroodje.setDisable(true);
+		annuleer.setDisable(true);
+		afsluiten.setDisable(true);
+
+		List<Node> broodjesChildren = kolomKeuzeBroodjes.getChildren();
+		for (Node broodje : broodjesChildren){
+			Button button = (Button) broodje;
+			button.setDisable(true);
+		}
+
+		List<Node> belegChildren = kolomKeuzeBeleg.getChildren();
+		for (Node beleg : belegChildren){
+			Button button = (Button) beleg;
+			button.setDisable(true);
+		}
+
+		controller.verwijderBestelling();
+	}
+
 	public void updateBestellijnen(List<Bestellijn> bestellijnen){
 		bestellijnObservableList = FXCollections.observableArrayList(bestellijnen);
 		bestellijnTabel.setItems(bestellijnObservableList);
@@ -239,7 +281,9 @@ public class OrderView {
 		for (Node broodje : broodjesChildren){
 			Button button = (Button) broodje;
 			int voorraad = voorraadLijst.get(button.getText());
-			if (voorraad <= 0) {
+			if (voorraad > 0 && actief) {
+				button.setDisable(false);
+			} else {
 				button.setDisable(true);
 			}
 		}
@@ -250,7 +294,9 @@ public class OrderView {
 		for (Node beleg : belegChildren){
 			Button button = (Button) beleg;
 			int voorraad = voorraadLijstBeleg.get(button.getText());
-			if (voorraad <= 0){
+			if (voorraad > 0 && actief){
+				button.setDisable(false);
+			}else {
 				button.setDisable(true);
 			}
 		}

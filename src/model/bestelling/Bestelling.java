@@ -41,4 +41,9 @@ public class Bestelling {
     public void voegBelegToeAanBestellijn(Bestellijn bestellijn, String beleg, BelegDB belegDB) {
         bestellijn.voegBelegToe(beleg, belegDB);
     }
+
+    public void verwijderBestellijn(Bestellijn bestellijn) {
+        bestellijn.maakKlaarOmVerwijderdTeWorden();
+        bestellijnen.remove(bestellijn);
+    }
 }
