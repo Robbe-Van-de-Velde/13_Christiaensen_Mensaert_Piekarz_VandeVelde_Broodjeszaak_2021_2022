@@ -67,6 +67,7 @@ public class OrderView {
 
 	private Pane createNodeHierarchy(OrderViewController controller){
 		VBox mainPane = new VBox(15);
+		mainPane.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
 
 		//eerste rij
 		HBox eersteRij = new HBox(100);

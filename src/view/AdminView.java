@@ -3,7 +3,6 @@ package view;
 import controller.AdminViewController;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -13,7 +12,7 @@ import javafx.stage.StageStyle;
 
 public class AdminView {
 	private Stage stage = new Stage();
-	private AdminMainPane borderPane;
+	private AdminMainPane adminMainPane;
 		
 	public AdminView(AdminViewController controller){
 		controller.setView(this);
@@ -23,16 +22,16 @@ public class AdminView {
 		stage.setY(20);
 		Group root = new Group();
 		Scene scene = new Scene(root, 650, 400);
-		borderPane = new AdminMainPane(controller);
-		borderPane.prefHeightProperty().bind(scene.heightProperty());
-		borderPane.prefWidthProperty().bind(scene.widthProperty());
-		root.getChildren().add(borderPane);
+		adminMainPane = new AdminMainPane(controller);
+		adminMainPane.prefHeightProperty().bind(scene.heightProperty());
+		adminMainPane.prefWidthProperty().bind(scene.widthProperty());
+		root.getChildren().add(adminMainPane);
 		stage.setScene(scene);
 		stage.sizeToScene();			
 		stage.show();		
 	}
 
 	public void updateVoorraad(){
-		borderPane.updateVoorraad();
+		adminMainPane.updateVoorraad();
 	}
 }

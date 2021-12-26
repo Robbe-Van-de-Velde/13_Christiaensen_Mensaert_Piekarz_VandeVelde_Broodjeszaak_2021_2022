@@ -10,8 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import model.Beleg;
 import model.Broodje;
 
@@ -34,6 +34,7 @@ public class SandwichOverviewPane extends GridPane{
 		this.broodjes = controller.getBroodjes();
 		this.beleggen = controller.getBeleggen();
 		this.controller = controller;
+		this.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
 
 		this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
