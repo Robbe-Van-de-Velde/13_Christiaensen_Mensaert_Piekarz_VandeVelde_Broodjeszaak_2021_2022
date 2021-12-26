@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Robbe
+ * @author Robbe, Patryk
  */
 
 public class OrderViewController implements Observer {
@@ -76,5 +76,9 @@ public class OrderViewController implements Observer {
 
     public Bestelling getBestelling(int volgnr) {
         return model.getBestellingByVolgnummer(volgnr);
+    }
+
+    public double getPrijsBestelling(Bestelling bestelling){
+        return model.getPrijsBestelling(bestelling);
     }
 }

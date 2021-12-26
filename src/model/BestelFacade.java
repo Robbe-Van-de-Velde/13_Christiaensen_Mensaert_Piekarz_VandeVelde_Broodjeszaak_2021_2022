@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.util.*;
 
 /**
- * @author Robbe
+ * @author Robbe, Patryk
  */
 public class BestelFacade implements Subject {
     private BelegDB belegDB;
@@ -145,5 +145,17 @@ public class BestelFacade implements Subject {
         Bestelling bestelling = new Bestelling();
         this.bestellingen.add(bestelling);
         return bestelling;
+    }
+
+    public double getPrijsBestelling(Bestelling bestelling){
+        double prijs = 0;
+        List<Bestellijn> bestellijnen = bestelling.getLijstBestellijnen();
+        for (Bestellijn bestellijn: bestellijnen){
+            prijs += bestellijn.getBroodje().getPrijs();
+            for (Beleg beleg: bestellijn.getBeleggen()){
+                prijs += beleg.getPrijs();
+            }
+        }
+        return prijs;
     }
 }
