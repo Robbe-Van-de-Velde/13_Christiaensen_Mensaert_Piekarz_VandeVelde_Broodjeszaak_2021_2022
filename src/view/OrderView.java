@@ -20,8 +20,11 @@ import model.bestelling.Bestellijn;
 import model.bestelling.Bestelling;
 import model.comparators.BelegComparatorByNaam;
 import model.comparators.BroodjesComparatorByNaam;
+import model.korting.KortingEnum;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +50,8 @@ public class OrderView {
 	private ObservableList<Bestellijn> bestellijnObservableList;
 	private Alert alert = new Alert(Alert.AlertType.ERROR);
 	private boolean actief = false;
+	private Label prijs;
+	private ChoiceBox promoties;
 
 	public OrderView(OrderViewController controller){
 		this.controller = controller;
@@ -78,7 +83,11 @@ public class OrderView {
 		nieuweBestellingButton = new Button("Nieuwe bestelling");
 		nieuweBestellingButton.setOnAction(e -> nieuweBestelling());
 		volgnrLabel = new Label("Volgnr: " + this.volgnr);
-		ChoiceBox promoties = new ChoiceBox();
+		promoties = new ChoiceBox();
+		List kortingen = Arrays.asList(KortingEnum.values());
+		for (Object korting: kortingen){
+			promoties.getItems().add(korting.toString());
+		}
 
 		eersteRij.getChildren().addAll(nieuweBestellingButton, volgnrLabel, promoties);
 
@@ -186,8 +195,9 @@ public class OrderView {
 		rij5.setPadding(new Insets(20,20,20,20));
 		afsluiten = new Button("Afsluiten bestelling");
 		afsluiten.setDisable(true);
+		afsluiten.setOnAction(e -> getPrijsBestelling());
 		Label teBetalen = new Label("Te betalen:");
-		Label prijs = new Label("5€ (placeholder)");
+		this.prijs = new Label("");
 		betaal = new Button("Betaal");
 		betaal.setDisable(true);
 		naarKeuken = new Button("Naar keuken");
@@ -244,6 +254,7 @@ public class OrderView {
 
 	public void nieuweBestelling(){
 		actief = true;
+		this.prijs.setText("");
 		this.volgnrLabel.setText("Volgnr: " + volgnr);
 		nieuweBestellingButton.setDisable(true);
 		zelfdeBroodje.setDisable(false);
@@ -266,6 +277,7 @@ public class OrderView {
 
 	public void annuleerBestelling(){
 		actief = false;
+        this.prijs.setText("");
 		this.volgnrLabel.setText("Volgnr: ");
 		nieuweBestellingButton.setDisable(false);
 		zelfdeBroodje.setDisable(true);
@@ -323,6 +335,15 @@ public class OrderView {
 	public int getVolgnr() {
 		return volgnr;
 	}
+
+	public void getPrijsBestelling(){
+        Double totprijs = controller.getPrijsBestelling(controller.getBestelling(this.volgnr));
+        betaal.setDisable(false);
+        String promotie = promoties.getValue().toString();
+        Double werkelijkePrijs = controller.GebruikPromotie(totprijs, promotie);
+        String w = werkelijkePrijs.toString();
+		this.prijs.setText(w);
+    }
 }
 
 

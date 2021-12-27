@@ -81,4 +81,8 @@ public class OrderViewController implements Observer {
     public double getPrijsBestelling(Bestelling bestelling){
         return model.getPrijsBestelling(bestelling);
     }
+
+    public double GebruikPromotie(double prijs, String promotie){
+        return model.GebruikPromotie(prijs, promotie);
+    }
 }

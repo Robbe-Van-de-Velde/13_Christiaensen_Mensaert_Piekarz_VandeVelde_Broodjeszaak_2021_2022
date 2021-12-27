@@ -5,6 +5,9 @@ import model.bestelling.Bestelling;
 import model.bestelling.BestellingEvents;
 import model.database.BelegDB;
 import model.database.BroodjesDB;
+import model.korting.KortingEnum;
+import model.korting.KortingFactory;
+import model.korting.KortingStrategy;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -157,5 +160,10 @@ public class BestelFacade implements Subject {
             }
         }
         return prijs;
+    }
+
+    public double GebruikPromotie(double prijs, String promotie){
+        KortingStrategy kortingStrategy = KortingFactory.getInstance().createKortingStrategy(promotie);
+        return kortingStrategy.berekenPrijs(prijs);
     }
 }
