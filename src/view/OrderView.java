@@ -22,11 +22,14 @@ import model.comparators.BelegComparatorByNaam;
 import model.comparators.BroodjesComparatorByNaam;
 import model.korting.KortingEnum;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author Robbe, Patryk
@@ -79,18 +82,18 @@ public class OrderView {
 
 		//eerste rij
 		HBox eersteRij = new HBox(100);
-		eersteRij.setSpacing(200);
+		eersteRij.setSpacing(125);
 		nieuweBestellingButton = new Button("Nieuwe bestelling");
 		nieuweBestellingButton.setOnAction(e -> nieuweBestelling());
-		volgnrLabel = new Label("Volgnr: " + this.volgnr);
+		volgnrLabel = new Label("Volgnr: ");
 		promoties = new ChoiceBox();
-		promoties.setMinWidth(150);
+		promoties.setMinWidth(200);
 		promoties.setPrefWidth(150);
 		List kortingen = Arrays.asList(KortingEnum.values());
 		for (Object korting: kortingen){
 			promoties.getItems().add(korting.toString());
 		}
-		promoties.getSelectionModel().selectFirst();
+		selectStandaardKorting();
 
 		eersteRij.getChildren().addAll(nieuweBestellingButton, volgnrLabel, promoties);
 
@@ -216,6 +219,18 @@ public class OrderView {
 		return mainPane;
 	}
 
+	private void selectStandaardKorting() {
+		Properties properties = new Properties();
+		try {
+			InputStream is = new FileInputStream("src/bestanden/settings.properties");
+			properties.load(is);
+			String korting = properties.getProperty("korting");
+			promoties.getSelectionModel().select(korting);
+		} catch (IOException e){
+			System.out.println("Probleem met properties");
+		}
+	}
+
 	private void voegZelfdeBroodjeToe() {
 		Bestellijn bestellijn = (Bestellijn) bestellijnTabel.getSelectionModel().getSelectedItem();
 		if (bestellijn != null) {
@@ -256,6 +271,7 @@ public class OrderView {
 	}
 
 	public void nieuweBestelling(){
+		selectStandaardKorting();
 		actief = true;
 		this.prijs.setText("");
 		this.volgnrLabel.setText("Volgnr: " + volgnr);

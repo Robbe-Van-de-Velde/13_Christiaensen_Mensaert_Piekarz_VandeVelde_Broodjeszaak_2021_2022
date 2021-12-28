@@ -8,6 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import model.korting.KortingEnum;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -49,7 +50,9 @@ public class InstellingenPane extends Pane {
         kortingStrategie.setMinWidth(650);
         Label kortingLabel = new Label("Kies hier de standaard aangeduide korting strategie:");
         //TODO eens de kortingstrategies zijn aangemaakt dit aanpassen
-        kortingStrats = new ComboBox();
+        ArrayList<String> kortingen = new ArrayList(Arrays.asList(KortingEnum.values()));
+        kortingStrats = new ComboBox(FXCollections.observableArrayList(kortingen));
+        kortingStrats.getSelectionModel().selectFirst();
 
         kortingStrategie.getChildren().addAll(kortingLabel, kortingStrats);
 
@@ -75,7 +78,8 @@ public class InstellingenPane extends Pane {
                 properties.setProperty("belegFile", "src/bestanden/beleg.txt");
                 properties.setProperty("fileType", "tekst");
             }
-            properties.store(os, "save strategie");
+            properties.setProperty("korting", kortingStrats.getValue().toString());
+            properties.store(os, "");
             os.close();
         }catch (Exception e){
             System.out.println("Fout bij opslaan van instellingen");
