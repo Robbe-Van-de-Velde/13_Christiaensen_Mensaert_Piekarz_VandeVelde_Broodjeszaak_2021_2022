@@ -22,6 +22,7 @@ import model.comparators.BelegComparatorByNaam;
 import model.comparators.BroodjesComparatorByNaam;
 import model.korting.KortingEnum;
 
+import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -208,6 +209,7 @@ public class OrderView {
 		betaal.setDisable(true);
 		naarKeuken = new Button("Naar keuken");
 		naarKeuken.setDisable(true);
+		naarKeuken.setOnAction(e -> naarKeuken(controller.getBestelling(this.volgnr)));
 		rij5.getChildren().addAll(afsluiten, teBetalen, prijs, betaal, naarKeuken);
 		rij5.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
 		rij5.setBorder(new Border(new BorderStroke(Color.BLACK,
@@ -362,6 +364,16 @@ public class OrderView {
 		String w = totPrijs.toString();
 		this.prijs.setText(w);
     }
+
+	public void betaal(){
+		/**all other buttons inactive functions**/
+		naarKeuken.setDisable(false);
+		/** set state to IN wacht **/
+	}
+
+	public void naarKeuken(Bestelling bestelling){
+		controller.naarKeuken(bestelling);
+	}
 }
 
 

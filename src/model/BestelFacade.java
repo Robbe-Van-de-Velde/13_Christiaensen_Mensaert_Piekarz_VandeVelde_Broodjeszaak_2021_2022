@@ -23,6 +23,8 @@ public class BestelFacade implements Subject {
     private BroodjesDB broodjesDB;
     private Map<BestellingEvents, List<Observer>> observers;
     private List<Bestelling> bestellingen;
+    private LinkedList<Bestelling> wachtrij;
+    private int rijLenghte;
 
     public BestelFacade() throws IOException {
         Properties properties = new Properties();
@@ -77,6 +79,10 @@ public class BestelFacade implements Subject {
 
     public List<Bestellijn> getLijstBestellijnen(Bestelling bestelling){
         return bestelling.getLijstBestellijnen();
+    }
+
+    public LinkedList<Bestelling> getWachtrij() {
+        return wachtrij;
     }
 
     public void voegBestellijnToe(String broodje, Bestelling bestelling) throws IOException {
@@ -155,4 +161,7 @@ public class BestelFacade implements Subject {
         return kortingStrategy.berekenPrijs(bestelling);
     }
 
+    public void bestellingNaarKeuken(Bestelling bestelling){
+        wachtrij.add(bestelling);
+    }
 }

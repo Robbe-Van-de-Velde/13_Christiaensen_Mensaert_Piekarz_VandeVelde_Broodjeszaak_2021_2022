@@ -79,4 +79,8 @@ public class OrderViewController implements Observer {
     }
 
     public double berekenPrijs(Bestelling bestelling, String promotie){ return model.berekenPrijs(bestelling, promotie);}
+
+    public void naarKeuken(Bestelling bestelling){
+        model.bestellingNaarKeuken(bestelling);
+    }
 }
