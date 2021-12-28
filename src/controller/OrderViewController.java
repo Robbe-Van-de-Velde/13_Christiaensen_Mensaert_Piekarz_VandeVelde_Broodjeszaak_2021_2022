@@ -78,11 +78,5 @@ public class OrderViewController implements Observer {
         return model.getBestellingByVolgnummer(volgnr);
     }
 
-    public double getPrijsBestelling(Bestelling bestelling){
-        return model.getPrijsBestelling(bestelling);
-    }
-
-    public double GebruikPromotie(double prijs, String promotie){
-        return model.GebruikPromotie(prijs, promotie);
-    }
+    public double berekenPrijs(Bestelling bestelling, String promotie){ return model.berekenPrijs(bestelling, promotie);}
 }

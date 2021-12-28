@@ -150,20 +150,9 @@ public class BestelFacade implements Subject {
         return bestelling;
     }
 
-    public double getPrijsBestelling(Bestelling bestelling){
-        double prijs = 0;
-        List<Bestellijn> bestellijnen = bestelling.getLijstBestellijnen();
-        for (Bestellijn bestellijn: bestellijnen){
-            prijs += bestellijn.getBroodje().getPrijs();
-            for (Beleg beleg: bestellijn.getBeleggen()){
-                prijs += beleg.getPrijs();
-            }
-        }
-        return prijs;
+    public double berekenPrijs(Bestelling bestelling, String promotie){
+        KortingStrategy kortingStrategy = KortingFactory.getInstance().createKortingStrategy(promotie);
+        return kortingStrategy.berekenPrijs(bestelling);
     }
 
-    public double GebruikPromotie(double prijs, String promotie){
-        KortingStrategy kortingStrategy = KortingFactory.getInstance().createKortingStrategy(promotie);
-        return kortingStrategy.berekenPrijs(prijs);
-    }
 }

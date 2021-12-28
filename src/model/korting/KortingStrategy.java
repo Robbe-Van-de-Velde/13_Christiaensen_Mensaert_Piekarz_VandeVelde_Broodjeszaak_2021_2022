@@ -1,9 +1,11 @@
 package model.korting;
 
+import model.bestelling.Bestelling;
+
 /**
  * @author Patryk
  */
 
 public interface KortingStrategy {
-    double berekenPrijs(double prijs);
+    double berekenPrijs(Bestelling bestelling);
 }

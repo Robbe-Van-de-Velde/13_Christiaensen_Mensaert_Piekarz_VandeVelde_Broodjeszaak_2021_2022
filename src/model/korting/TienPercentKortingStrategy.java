@@ -10,7 +10,7 @@ import java.util.List;
  * @author Patryk
  */
 
-public class GeenKortingStrategy implements KortingStrategy {
+public class TienPercentKortingStrategy implements KortingStrategy{
     @Override
     public double berekenPrijs(Bestelling bestelling) {
         double prijs = 0;
@@ -21,6 +21,6 @@ public class GeenKortingStrategy implements KortingStrategy {
                 prijs += beleg.getPrijs();
             }
         }
-        return prijs;
+        return prijs- (prijs*0.1);
     }
 }

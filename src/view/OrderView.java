@@ -84,10 +84,13 @@ public class OrderView {
 		nieuweBestellingButton.setOnAction(e -> nieuweBestelling());
 		volgnrLabel = new Label("Volgnr: " + this.volgnr);
 		promoties = new ChoiceBox();
+		promoties.setMinWidth(150);
+		promoties.setPrefWidth(150);
 		List kortingen = Arrays.asList(KortingEnum.values());
 		for (Object korting: kortingen){
 			promoties.getItems().add(korting.toString());
 		}
+		promoties.getSelectionModel().selectFirst();
 
 		eersteRij.getChildren().addAll(nieuweBestellingButton, volgnrLabel, promoties);
 
@@ -337,11 +340,10 @@ public class OrderView {
 	}
 
 	public void getPrijsBestelling(){
-        Double totprijs = controller.getPrijsBestelling(controller.getBestelling(this.volgnr));
-        betaal.setDisable(false);
-        String promotie = promoties.getValue().toString();
-        Double werkelijkePrijs = controller.GebruikPromotie(totprijs, promotie);
-        String w = werkelijkePrijs.toString();
+		String promotie = promoties.getSelectionModel().getSelectedItem().toString();
+		Double totPrijs = controller.berekenPrijs(controller.getBestelling(this.volgnr), promotie);
+		betaal.setDisable(false);
+		String w = totPrijs.toString();
 		this.prijs.setText(w);
     }
 }

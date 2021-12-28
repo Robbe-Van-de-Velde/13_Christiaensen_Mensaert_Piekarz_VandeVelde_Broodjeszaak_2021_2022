@@ -5,9 +5,9 @@ package model.korting;
  */
 
 public enum KortingEnum {
-    GEENKORTING("model/korting/GeenKortingStrategy", "GeenKortingStrategy"),
-    GOEDKOOPSTEGRATIS("model/korting/GoedkoopsteGratisStrategy", "GoedkoopsteGratisStrategy"),
-    PERCENTAGEKORTING("model/korting/PercentageKortingStrategy", "PercentageKortingStrategy");
+    GEENKORTING("model.korting.GeenKortingStrategy", "GeenKortingStrategy"),
+    GOEDKOOPSTEGRATIS("model.korting.GoedkoopsteGratisStrategy", "GoedkoopsteGratisStrategy"),
+    TIENPERCENTKORTING("model.korting.TienPercentKortingStrategy", "TienPercentKortingStrategy");
 
     private final String path;
     private final String classname;
