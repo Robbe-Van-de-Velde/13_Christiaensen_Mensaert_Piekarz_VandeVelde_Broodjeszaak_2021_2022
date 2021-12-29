@@ -26,6 +26,7 @@ public class OrderViewController implements Observer {
         model.addObserver(this, BestellingEvents.TOEVOEGEN_BROODJE);
         model.addObserver(this, BestellingEvents.TOEVOEGEN_BELEG);
         model.addObserver(this, BestellingEvents.VERWIJDER_BROODJE);
+        model.addObserver(this, BestellingEvents.ZEND_NAAR_KEUKEN);
     }
 
     public void setView(OrderView view){
@@ -82,5 +83,18 @@ public class OrderViewController implements Observer {
 
     public void naarKeuken(Bestelling bestelling){
         model.bestellingNaarKeuken(bestelling);
+    }
+
+    public void startBestelling(Bestelling bestelling) {
+        view.updateBestellijnen(model.getLijstBestellijnen(bestelling));
+        model.startBestelling(bestelling);
+    }
+
+    public void sluitBestellingAf(Bestelling bestelling) {
+        model.sluitBestellingAf(bestelling);
+    }
+
+    public void betaalBestelling(Bestelling bestelling) {
+        model.betaalBestelling(bestelling);
     }
 }

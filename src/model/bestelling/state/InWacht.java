@@ -15,7 +15,6 @@ public class InWacht implements BestellingState {
 
     @Override
     public void startBestelling() {
-        //TODO
         this.bestelling.changeState(bestelling.getInBestelling());
     }
 

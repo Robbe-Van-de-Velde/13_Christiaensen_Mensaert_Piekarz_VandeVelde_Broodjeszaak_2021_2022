@@ -1,7 +1,9 @@
 package model.bestelling.state;
 
 import model.bestelling.Bestelling;
-
+/**
+ * @author Robbe
+ */
 public class InWachtrij implements BestellingState{
     Bestelling bestelling;
 
@@ -56,7 +58,8 @@ public class InWachtrij implements BestellingState{
 
     @Override
     public void startBereiding() {
-        //TODO
+        System.out.println("De bestelling wordt gemaakt");
+        bestelling.changeState(bestelling.getInBereiding());
     }
 
     @Override

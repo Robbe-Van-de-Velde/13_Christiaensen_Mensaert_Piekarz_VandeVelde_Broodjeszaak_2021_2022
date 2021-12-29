@@ -202,14 +202,15 @@ public class OrderView {
 		rij5.setPadding(new Insets(20,20,20,20));
 		afsluiten = new Button("Afsluiten bestelling");
 		afsluiten.setDisable(true);
-		afsluiten.setOnAction(e -> getPrijsBestelling());
+		afsluiten.setOnAction(e -> sluitBestellingAf());
 		Label teBetalen = new Label("Te betalen:");
 		this.prijs = new Label("");
 		betaal = new Button("Betaal");
 		betaal.setDisable(true);
+		betaal.setOnAction(e -> betaal());
 		naarKeuken = new Button("Naar keuken");
 		naarKeuken.setDisable(true);
-		naarKeuken.setOnAction(e -> naarKeuken(controller.getBestelling(this.volgnr)));
+		naarKeuken.setOnAction(e -> naarKeuken());
 		rij5.getChildren().addAll(afsluiten, teBetalen, prijs, betaal, naarKeuken);
 		rij5.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
 		rij5.setBorder(new Border(new BorderStroke(Color.BLACK,
@@ -220,6 +221,7 @@ public class OrderView {
 
 		return mainPane;
 	}
+
 
 	private void selectStandaardKorting() {
 		Properties properties = new Properties();
@@ -282,18 +284,9 @@ public class OrderView {
 		verwijderBroodje.setDisable(false);
 		annuleer.setDisable(false);
 		afsluiten.setDisable(false);
+		controller.startBestelling(controller.getBestelling(this.volgnr));
 
-		List<Node> broodjesChildren = kolomKeuzeBroodjes.getChildren();
-		for (Node broodje : broodjesChildren){
-			Button button = (Button) broodje;
-			button.setDisable(false);
-		}
-
-		List<Node> belegChildren = kolomKeuzeBeleg.getChildren();
-		for (Node beleg : belegChildren){
-			Button button = (Button) beleg;
-			button.setDisable(false);
-		}
+		disableKeuzeButtons(false);
 	}
 
 	public void annuleerBestelling(){
@@ -305,20 +298,26 @@ public class OrderView {
 		verwijderBroodje.setDisable(true);
 		annuleer.setDisable(true);
 		afsluiten.setDisable(true);
+		betaal.setDisable(true);
+		naarKeuken.setDisable(true);
 
+		disableKeuzeButtons(true);
+		controller.verwijderBestelling(controller.getBestelling(volgnr));
+		volgnr = controller.voegBestellingToe().getVolgnr();
+	}
+
+	private void disableKeuzeButtons(boolean b) {
 		List<Node> broodjesChildren = kolomKeuzeBroodjes.getChildren();
-		for (Node broodje : broodjesChildren){
+		for (Node broodje : broodjesChildren) {
 			Button button = (Button) broodje;
-			button.setDisable(true);
+			button.setDisable(b);
 		}
 
 		List<Node> belegChildren = kolomKeuzeBeleg.getChildren();
-		for (Node beleg : belegChildren){
+		for (Node beleg : belegChildren) {
 			Button button = (Button) beleg;
-			button.setDisable(true);
+			button.setDisable(b);
 		}
-		controller.verwijderBestelling(controller.getBestelling(volgnr));
-		volgnr = controller.voegBestellingToe().getVolgnr();
 	}
 
 	public void updateBestellijnen(List<Bestellijn> bestellijnen){
@@ -367,13 +366,32 @@ public class OrderView {
 
 	public void betaal(){
 		/**all other buttons inactive functions**/
+		betaal.setDisable(true);
 		naarKeuken.setDisable(false);
+		controller.betaalBestelling(controller.getBestelling(volgnr));
 		/** set state to IN wacht **/
 	}
 
-	public void naarKeuken(Bestelling bestelling){
+	public void naarKeuken(){
+		actief = false;
+		Bestelling bestelling = controller.getBestelling(this.volgnr);
 		controller.naarKeuken(bestelling);
+		naarKeuken.setDisable(true);
+		nieuweBestellingButton.setDisable(false);
+		bestelling = controller.voegBestellingToe();
+		this.volgnr = bestelling.getVolgnr();
 	}
+
+
+	private void sluitBestellingAf() {
+		controller.sluitBestellingAf(controller.getBestelling(volgnr));
+		getPrijsBestelling();
+		zelfdeBroodje.setDisable(true);
+		verwijderBroodje.setDisable(true);
+		afsluiten.setDisable(true);
+		disableKeuzeButtons(true);
+	}
+
 }
 
 

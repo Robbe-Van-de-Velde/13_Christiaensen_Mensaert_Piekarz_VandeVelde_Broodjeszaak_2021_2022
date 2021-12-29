@@ -7,8 +7,7 @@ import model.database.BroodjesDB;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Robbe
@@ -67,6 +66,28 @@ public class Bestellijn {
         return broodje;
     }
 
+    public String getBestellijnAsString(){
+        String result = naamBroodje + ":";
+        Map<String, Integer> countMap = new HashMap<>();
+        for (Beleg beleg : beleggen){
+            if (countMap.containsKey(beleg.getNaam())){
+                countMap.put(beleg.getNaam(), countMap.get(beleg.getNaam()) + 1);
+            } else {
+                countMap.put(beleg.getNaam(), 1);
+            }
+        }
+        for (String key : countMap.keySet()){
+            int aantal = countMap.get(key);
+            if (aantal == 1){
+                result += " " + key + ",";
+            } else {
+                result += " " + aantal + " x " + key + ",";
+            }
+        }
+        result = result.replaceAll(",$", "");
+        return result;
+    }
+
     @Override
     public String toString() {
         return "Bestellijn{" +
@@ -77,4 +98,11 @@ public class Bestellijn {
                 ", broodjesDB=" + broodjesDB +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Bestellijn b2 = (Bestellijn) o;
+        return b2.getNaamBroodje().equals(this.getNaamBroodje()) && b2.getNamenBeleg().equals(this.getNamenBeleg());
+    }
+
 }

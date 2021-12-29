@@ -27,6 +27,9 @@ public class GoedkoopsteGratisStrategy implements KortingStrategy{
             }
             lijst.add(prijs);
         }
+        if (lijst.size() == 1){
+            return lijst.get(0);
+        }
         Collections.sort(lijst);
         for (int i = 1; i <= lijst.size()-1; i++){
             totprijs += lijst.get(i);

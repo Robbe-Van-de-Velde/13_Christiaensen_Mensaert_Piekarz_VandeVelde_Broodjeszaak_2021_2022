@@ -2,6 +2,10 @@ package model.bestelling.state;
 
 import model.bestelling.Bestelling;
 
+/**
+ * @author Robbe
+ */
+
 public class Afgesloten implements BestellingState {
     Bestelling bestelling;
 
@@ -41,12 +45,12 @@ public class Afgesloten implements BestellingState {
 
     @Override
     public void annuleren() {
-        //TODO
+        System.out.println("Bestelling is geannuleerd");
     }
 
     @Override
     public void betalen() {
-        //TODO
+        System.out.println("Bestelling is betaald");
         bestelling.changeState(bestelling.getBetaald());
     }
 

@@ -1,7 +1,9 @@
 package model.bestelling.state;
 
 import model.bestelling.Bestelling;
-
+/**
+ * @author Robbe
+ */
 public class InBereiding implements BestellingState {
     Bestelling bestelling;
 
@@ -61,6 +63,6 @@ public class InBereiding implements BestellingState {
 
     @Override
     public void afgewerkt() {
-        //TODO
+        System.out.println("De bestelling is afgewerkt");
     }
 }

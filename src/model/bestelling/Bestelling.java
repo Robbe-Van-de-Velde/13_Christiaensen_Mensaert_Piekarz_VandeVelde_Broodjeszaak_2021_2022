@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Robbe
@@ -27,7 +28,7 @@ public class Bestelling {
     private BestellingState inBereiding;
     private List<Bestellijn> bestellijnen;
 
-    private BestellingState state = inWacht;
+    private BestellingState state;
 
 
     public Bestelling() {
@@ -38,6 +39,10 @@ public class Bestelling {
         inWacht = new InWacht(this);
         inBestelling = new InBestelling(this);
         afgesloten = new Afgesloten(this);
+        betaald = new Betaald(this);
+        inWachtrij = new InWachtrij(this);
+        inBereiding = new InBereiding(this);
+        this.state = inWacht;
     }
 
     public int getVolgnr() {
@@ -51,15 +56,18 @@ public class Bestelling {
     public void voegBestellijnToe(String naamBroodje, BroodjesDB broodjesDB) throws IOException {
         Bestellijn bestellijn = new Bestellijn(naamBroodje, broodjesDB);
         this.bestellijnen.add(bestellijn);
+        state.toevoegenBroodje();
     }
 
     public void voegBelegToeAanBestellijn(Bestellijn bestellijn, String beleg, BelegDB belegDB) {
         bestellijn.voegBelegToe(beleg, belegDB);
+        state.toevoegenBeleg();
     }
 
     public void verwijderBestellijn(Bestellijn bestellijn) {
         bestellijn.maakKlaarOmVerwijderdTeWorden();
         bestellijnen.remove(bestellijn);
+        state.verwijderBroodje();
     }
 
     public void voegZelfdeBroodjeToe(Bestellijn bestellijn, BroodjesDB broodjesDB, BelegDB belegDB) throws IOException {
@@ -86,6 +94,7 @@ public class Bestelling {
             dubbeleBestellijn.voegBelegToe(beleg.getNaam(), belegDB);
         }
         this.bestellijnen.add(dubbeleBestellijn);
+        state.toevoegenIdentiekBroodje();
     }
 
     public BestellingState getState() {
@@ -126,5 +135,26 @@ public class Bestelling {
 
     public List<Bestellijn> getBestellijnen() {
         return bestellijnen;
+    }
+
+    public String getBestellingAsString(){
+        Map<String, Integer> countMap = new HashMap<>();
+        for (Bestellijn bestellijn : bestellijnen){
+            if (countMap.containsKey(bestellijn.getBestellijnAsString())){
+                countMap.put(bestellijn.getBestellijnAsString(), countMap.get(bestellijn.getBestellijnAsString()) + 1);
+            } else {
+                countMap.put(bestellijn.getBestellijnAsString(), 1);
+            }
+        }
+        String result = "";
+        for (String key : countMap.keySet()){
+            int aantal = countMap.get(key);
+            if (aantal == 1) {
+                result += key + "\n";
+            } else {
+                result += aantal + " x " + key + "\n";
+            }
+        }
+        return result;
     }
 }

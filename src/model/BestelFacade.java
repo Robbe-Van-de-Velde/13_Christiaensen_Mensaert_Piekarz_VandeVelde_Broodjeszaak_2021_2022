@@ -24,7 +24,7 @@ public class BestelFacade implements Subject {
     private Map<BestellingEvents, List<Observer>> observers;
     private List<Bestelling> bestellingen;
     private LinkedList<Bestelling> wachtrij;
-    private int rijLenghte;
+    private int rijLengte;
 
     public BestelFacade() throws IOException {
         Properties properties = new Properties();
@@ -44,6 +44,7 @@ public class BestelFacade implements Subject {
             this.observers.put(event, new ArrayList<>());
         }
         this.bestellingen = new ArrayList<>();
+        this.wachtrij = new LinkedList<>();
     }
 
     @Override
@@ -89,7 +90,6 @@ public class BestelFacade implements Subject {
         bestelling.voegBestellijnToe(broodje, broodjesDB);
 
         notifyObservers(BestellingEvents.TOEVOEGEN_BROODJE);
-        notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
     }
 
     public Map<String, Integer> getVoorraadlijstBroodjes(){
@@ -108,7 +108,6 @@ public class BestelFacade implements Subject {
         bestelling.voegBelegToeAanBestellijn(bestellijn, beleg, belegDB);
 
         notifyObservers(BestellingEvents.TOEVOEGEN_BELEG);
-        notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
     }
 
     public Map<String, Integer> getVoorraadlijstBeleg(){
@@ -119,10 +118,10 @@ public class BestelFacade implements Subject {
         bestelling.verwijderBestellijn(bestellijn);
 
         notifyObservers(BestellingEvents.VERWIJDER_BROODJE);
-        notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
     }
 
     public void verwijderBestelling(Bestelling bestelling) {
+        bestelling.getState().annuleren();
         Iterator<Bestellijn> iterator = getLijstBestellijnen(bestelling).iterator();
         while (iterator.hasNext()){
             Bestellijn bestellijn = iterator.next();
@@ -130,14 +129,12 @@ public class BestelFacade implements Subject {
             iterator.remove();
         }
         notifyObservers(BestellingEvents.VERWIJDER_BROODJE);
-        notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
     }
 
     public void voegZelfdeBroodjeToe(Bestellijn bestellijn, Bestelling bestelling) throws IOException {
         bestelling.voegZelfdeBroodjeToe(bestellijn, broodjesDB, belegDB);
 
         notifyObservers(BestellingEvents.TOEVOEGEN_BELEG);
-        notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
     }
 
     public Bestelling getBestellingByVolgnummer(int volgnummer){
@@ -162,6 +159,45 @@ public class BestelFacade implements Subject {
     }
 
     public void bestellingNaarKeuken(Bestelling bestelling){
+        bestelling.getState().zendNaarKeuken();
         wachtrij.add(bestelling);
+        notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
+        notifyObservers(BestellingEvents.ZEND_NAAR_KEUKEN);
+    }
+
+    public int getRijLengte(){
+        return wachtrij.size();
+    }
+
+    public void startBestelling(Bestelling bestelling) {
+        bestelling.getState().startBestelling();
+    }
+
+    public void sluitBestellingAf(Bestelling bestelling) {
+        bestelling.getState().afsluiten();
+    }
+
+    public void betaalBestelling(Bestelling bestelling) {
+        bestelling.getState().betalen();
+    }
+
+    public Bestelling getEersteBestellingUitWachtrij() {
+        if (wachtrij.size() > 0){
+            Bestelling bestelling = wachtrij.get(0);
+            bestelling.getState().startBereiding();
+            return bestelling;
+        }
+        return null;
+    }
+
+    public void werkEersteBestellingAf() {
+        if (wachtrij.size() > 0){
+            Bestelling bestelling = wachtrij.get(0);
+            bestelling.getState().afgewerkt();
+            if (bestelling.getState().equals(bestelling.getInBereiding())) {
+                wachtrij.remove(0);
+                notifyObservers(BestellingEvents.AFGEWERKT);
+            }
+        }
     }
 }

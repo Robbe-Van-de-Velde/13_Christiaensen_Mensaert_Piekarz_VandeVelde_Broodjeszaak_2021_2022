@@ -10,6 +10,10 @@ import view.OrderView;
 
 import java.util.LinkedList;
 
+/**
+ * @author Patryk, Robbe
+ */
+
 public class KitchenViewController implements Observer {
     private KitchenView view;
     private BestelFacade model;
@@ -25,6 +29,15 @@ public class KitchenViewController implements Observer {
 
     @Override
     public void update() {
+        view.updateWachtrij(model.getRijLengte());
+        view.huidigeBestellingAfgewerkt();
+    }
 
+    public Bestelling getEersteBestelling(){
+        return model.getEersteBestellingUitWachtrij();
+    }
+
+    public void werkBestellingAf() {
+        model.werkEersteBestellingAf();
     }
 }

@@ -20,32 +20,33 @@ public class InBestelling implements BestellingState {
 
     @Override
     public void toevoegenBroodje() {
-        //TODO
+        System.out.println("Nieuw broodje toegevoegd aan bestelling met volg nummer: " + bestelling.getVolgnr());
     }
 
     @Override
     public void verwijderBroodje() {
-        //TODO
+        System.out.println("Broodje verwijderd uit bestelling met volg nummer: " + bestelling.getVolgnr());
     }
 
     @Override
     public void toevoegenIdentiekBroodje() {
-        //TODO
+        System.out.println("Identiek broodje toegevoegd aan bestelling met volg nummer: " + bestelling.getVolgnr());
     }
 
     @Override
     public void toevoegenBeleg() {
-        //TODO
+        System.out.println("Nieuw beleg toegevoegd aan broodje bij bestelling met volg nummer: " + bestelling.getVolgnr());
     }
 
     @Override
     public void afsluiten() {
-        System.out.println("doet niets");
+        System.out.println("Bestelling wordt afgesloten");
+        bestelling.changeState(bestelling.getAfgesloten());
     }
 
     @Override
     public void annuleren() {
-        System.out.println("doet niets");
+        System.out.println("Bestelling is geannuleerd");
     }
 
     @Override

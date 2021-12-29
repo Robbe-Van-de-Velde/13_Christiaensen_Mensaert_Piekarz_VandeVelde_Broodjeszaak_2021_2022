@@ -1,7 +1,9 @@
 package model.bestelling.state;
 
 import model.bestelling.Bestelling;
-
+/**
+ * @author Robbe
+ */
 public class Betaald implements BestellingState {
     Bestelling bestelling;
 
@@ -51,7 +53,8 @@ public class Betaald implements BestellingState {
 
     @Override
     public void zendNaarKeuken() {
-        //TODO
+        System.out.println("Bestelling is naar de keuken verzonden");
+        bestelling.changeState(bestelling.getInWachtrij());
     }
 
     @Override

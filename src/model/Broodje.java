@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 /**
  * @author Patryk, Robbe
  */
@@ -40,5 +42,18 @@ public class Broodje {
 
     public void aanpassenVoorraad(int aantal){
         this.voorraad = this.voorraad - aantal;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Broodje broodje = (Broodje) o;
+        return Objects.equals(naam, broodje.naam);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(naam);
     }
 }
