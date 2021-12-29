@@ -29,8 +29,8 @@ public class KitchenViewController implements Observer {
 
     @Override
     public void update() {
-        view.updateWachtrij(model.getRijLengte());
         view.huidigeBestellingAfgewerkt();
+        view.updateWachtrij(model.getRijLengte());
     }
 
     public Bestelling getEersteBestelling(){

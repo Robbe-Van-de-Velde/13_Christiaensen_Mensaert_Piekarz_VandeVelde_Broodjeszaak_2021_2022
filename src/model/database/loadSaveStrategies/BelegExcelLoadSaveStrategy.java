@@ -1,7 +1,7 @@
 package model.database.loadSaveStrategies;
 
 import model.Beleg;
-import util.ExcelLoadSaveTemplate;
+import model.database.util.ExcelLoadSaveTemplate;
 
 import java.util.ArrayList;
 

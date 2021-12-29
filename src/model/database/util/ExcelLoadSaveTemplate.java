@@ -1,7 +1,6 @@
-package util;
+package model.database.util;
 
 import jxl.read.biff.BiffException;
-import model.database.loadSaveStrategies.LoadSaveStrategy;
 
 import java.io.File;
 import java.io.IOException;

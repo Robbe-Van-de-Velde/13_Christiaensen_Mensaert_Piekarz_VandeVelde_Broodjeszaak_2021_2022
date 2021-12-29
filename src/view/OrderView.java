@@ -86,7 +86,7 @@ public class OrderView {
 		eersteRij.setSpacing(125);
 		nieuweBestellingButton = new Button("Nieuwe bestelling");
 		nieuweBestellingButton.setOnAction(e -> nieuweBestelling());
-		volgnrLabel = new Label("Volgnr: ");
+		volgnrLabel = new Label("Volgnr: " + this.volgnr);
 		promoties = new ChoiceBox();
 		promoties.setMinWidth(200);
 		promoties.setPrefWidth(150);
@@ -377,9 +377,11 @@ public class OrderView {
 		Bestelling bestelling = controller.getBestelling(this.volgnr);
 		controller.naarKeuken(bestelling);
 		naarKeuken.setDisable(true);
+		annuleer.setDisable(true);
 		nieuweBestellingButton.setDisable(false);
 		bestelling = controller.voegBestellingToe();
 		this.volgnr = bestelling.getVolgnr();
+		volgnrLabel.setText("Volgnr: " + this.volgnr);
 	}
 
 

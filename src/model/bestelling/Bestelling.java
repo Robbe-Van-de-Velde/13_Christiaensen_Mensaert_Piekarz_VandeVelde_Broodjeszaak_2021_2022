@@ -149,11 +149,7 @@ public class Bestelling {
         String result = "";
         for (String key : countMap.keySet()){
             int aantal = countMap.get(key);
-            if (aantal == 1) {
-                result += key + "\n";
-            } else {
-                result += aantal + " x " + key + "\n";
-            }
+            result += aantal + " x " + key + "\n";
         }
         return result;
     }

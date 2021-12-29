@@ -1,4 +1,4 @@
-package util;
+package model.database.util;
 
 import java.io.File;
 import java.io.IOException;
