@@ -14,11 +14,6 @@ import java.util.*;
 public class BroodjesDB {
     private TreeMap<String, Broodje> broodjes;
 
-    /*public BroodjesDB() throws IOException {
-        File belegbestand = new File("src/bestanden/broodjes.txt");
-        this.broodjes = new TreeMap<>(new BroodjesTekstLoadSaveStrategy().load(belegbestand));
-    }*/
-
     public BroodjesDB(File file, String fileType) throws IOException {
         String strategyNaam = fileType.toUpperCase() + "BROODJE";
         LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.getInstance().createLoadSaveStrategy(strategyNaam);
@@ -34,7 +29,8 @@ public class BroodjesDB {
     }
 
     public void save(File file, String strategy){
-        LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.getInstance().createLoadSaveStrategy(strategy);
+        String strategyNaam = strategy.toUpperCase() + "BROODJE";
+        LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.getInstance().createLoadSaveStrategy(strategyNaam);
         loadSaveStrategy.save(file, this.broodjes);
     }
 

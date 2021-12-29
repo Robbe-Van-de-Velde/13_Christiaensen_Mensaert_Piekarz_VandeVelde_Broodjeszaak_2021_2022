@@ -64,6 +64,8 @@ public class KitchenView {
 		volgendeBestelling.setOnAction(e -> volgendeBestelling());
 		afwerken = new Button("Bestelling afgewerkt");
 		afwerken.setOnAction(e -> bestellingAfwerken());
+		afwerken.setDisable(true);
+		volgendeBestelling.setDisable(true);
 
 		eersteRij.getChildren().addAll(volgendeBestelling, afwerken);
 
@@ -102,6 +104,13 @@ public class KitchenView {
 
 	public void updateWachtrij(int wachtrijlengte){
 		volgnrLabel.setText("Bestellingen in wachtrij: " + wachtrijlengte);
+		if (wachtrijlengte == 0){
+			afwerken.setDisable(true);
+			volgendeBestelling.setDisable(true);
+		} else {
+			afwerken.setDisable(false);
+			volgendeBestelling.setDisable(false);
+		}
 	}
 
 	public void huidigeBestellingAfgewerkt(){

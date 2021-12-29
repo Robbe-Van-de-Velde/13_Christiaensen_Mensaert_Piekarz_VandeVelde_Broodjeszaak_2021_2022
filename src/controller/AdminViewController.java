@@ -50,4 +50,8 @@ public class AdminViewController implements Observer {
     public void update() {
         this.view.updateVoorraad();
     }
+
+    public void slaVoorraadVeranderingOp() {
+        model.slaVoorraadVeranderingOp();
+    }
 }

@@ -1,14 +1,7 @@
 package model.database.loadSaveStrategies;
 
 import model.Broodje;
-import util.TekstLoadSaveTemplate;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
+import model.database.util.TekstLoadSaveTemplate;
 
 /**
  * @author Robbe

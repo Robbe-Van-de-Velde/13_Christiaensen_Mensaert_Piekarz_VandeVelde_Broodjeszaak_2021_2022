@@ -9,10 +9,7 @@ import model.korting.KortingEnum;
 import model.korting.KortingFactory;
 import model.korting.KortingStrategy;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -239,5 +236,24 @@ public class BestelFacade implements Subject {
             }
         }
         return verkochteBelegen;
+
+    public void slaVoorraadVeranderingOp() {
+        Properties properties = new Properties();
+        try {
+            InputStream is = new FileInputStream("src/bestanden/settings.properties");
+            properties.load(is);
+            String broodjesFileLocatie = properties.getProperty("broodjesFile");
+            String belegFileLocatie = properties.getProperty("belegFile");
+            File broodjesFile = new File(broodjesFileLocatie);
+            File belegFile = new File(belegFileLocatie);
+            String fileType = properties.getProperty("fileType");
+
+            belegDB.save(belegFile, fileType);
+            broodjesDB.save(broodjesFile, fileType);
+
+            is.close();
+        } catch (Exception e){
+            System.out.println("Fout met properties");
+        }
     }
 }

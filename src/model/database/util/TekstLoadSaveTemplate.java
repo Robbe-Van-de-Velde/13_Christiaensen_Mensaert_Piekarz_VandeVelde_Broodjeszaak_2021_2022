@@ -1,13 +1,8 @@
-package util;
-
-import model.Beleg;
-import model.Broodje;
-import model.database.loadSaveStrategies.LoadSaveStrategy;
+package model.database.util;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * @author Patryk, Robbe

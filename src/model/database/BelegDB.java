@@ -18,11 +18,6 @@ import java.util.*;
 public class BelegDB {
     private TreeMap<String, Beleg> beleggen;
 
-    /*public BelegDB() throws IOException {
-        File belegbestand = new File("src/bestanden/beleg.txt");
-        this.beleggen = new TreeMap<>(new BelegTekstLoadSaveStrategy().load(belegbestand));
-    }*/
-
     public BelegDB(File file, String fileType) throws IOException {
         String strategyNaam = fileType.toUpperCase() + "BELEG";
         LoadSaveStrategyFactory factory = LoadSaveStrategyFactory.getInstance();
@@ -39,7 +34,8 @@ public class BelegDB {
     }
 
     public void save(File file, String strategy){
-        LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.getInstance().createLoadSaveStrategy(strategy);
+        String strategyNaam = strategy.toUpperCase() + "BELEG";
+        LoadSaveStrategy loadSaveStrategy = LoadSaveStrategyFactory.getInstance().createLoadSaveStrategy(strategyNaam);
         loadSaveStrategy.save(file, this.beleggen);
     }
 
