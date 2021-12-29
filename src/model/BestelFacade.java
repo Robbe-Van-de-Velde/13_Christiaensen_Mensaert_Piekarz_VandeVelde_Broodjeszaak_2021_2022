@@ -23,8 +23,10 @@ public class BestelFacade implements Subject {
     private BroodjesDB broodjesDB;
     private Map<BestellingEvents, List<Observer>> observers;
     private List<Bestelling> bestellingen;
+    private List<Bestelling> alleVerkochte = new ArrayList<>();
     private LinkedList<Bestelling> wachtrij;
     private int rijLengte;
+
 
     public BestelFacade() throws IOException {
         Properties properties = new Properties();
@@ -161,6 +163,7 @@ public class BestelFacade implements Subject {
     public void bestellingNaarKeuken(Bestelling bestelling){
         bestelling.getState().zendNaarKeuken();
         wachtrij.add(bestelling);
+        alleVerkochte.add(bestelling);
         notifyObservers(BestellingEvents.WIJZIGING_VOORRAAD);
         notifyObservers(BestellingEvents.ZEND_NAAR_KEUKEN);
     }
@@ -199,5 +202,42 @@ public class BestelFacade implements Subject {
                 notifyObservers(BestellingEvents.AFGEWERKT);
             }
         }
+    }
+
+    public List<Bestelling> getAlleVerkochte() {
+        return alleVerkochte;
+    }
+
+    public Map<String, Integer> getAlleverkochteBroodjes(){
+        Map<String, Integer> verkochteBroodjes = new HashMap<>();
+        for (Bestelling bestelling: this.bestellingen){
+            for (Bestellijn bestellijn: bestelling.getBestellijnen()){
+                String broodje = bestellijn.getBroodje().getNaam();
+                if (verkochteBroodjes.containsKey(broodje)){
+                    verkochteBroodjes.put(broodje, verkochteBroodjes.get(broodje) + 1);
+                }
+                else{
+                    verkochteBroodjes.put(broodje, 1);
+                }
+            }
+        }
+        return verkochteBroodjes;
+    }
+    public Map<String, Integer> getAlleverkochteBelegen(){
+        Map<String, Integer> verkochteBelegen = new HashMap<>();
+        for (Bestelling bestelling: this.bestellingen){
+            for (Bestellijn bestellijn: bestelling.getBestellijnen()){
+                for (Beleg beleg: bestellijn.getBeleggen()){
+                    String bel = beleg.getNaam();
+                    if (verkochteBelegen.containsKey(bel)){
+                        verkochteBelegen.put(bel, verkochteBelegen.get(bel) + 1);
+                    }
+                    else {
+                        verkochteBelegen.put(bel, 1);
+                    }
+                }
+            }
+        }
+        return verkochteBelegen;
     }
 }

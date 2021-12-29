@@ -1,15 +1,18 @@
 package controller;
 
 import model.*;
+import model.bestelling.Bestellijn;
+import model.bestelling.Bestelling;
 import model.bestelling.BestellingEvents;
 import model.database.BelegDB;
 import model.database.BroodjesDB;
 import view.AdminView;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- * @author Robbe
+ * @author Robbe, Patryk
  */
 
 public class AdminViewController implements Observer {
@@ -20,6 +23,7 @@ public class AdminViewController implements Observer {
     public AdminViewController(BestelFacade model) {
         this.model = model;
         model.addObserver(this, BestellingEvents.WIJZIGING_VOORRAAD);
+        model.addObserver(this, BestellingEvents.ZEND_NAAR_KEUKEN);
     }
 
     public void setView(AdminView view){
@@ -34,7 +38,13 @@ public class AdminViewController implements Observer {
         return model.getBeleggen();
     }
 
+    public List<Bestelling>  getStatistiek(){
+        return model.getAlleVerkochte();
+    }
 
+    public Map<String, Integer> getVerkochteBroodjes(){return model.getAlleverkochteBroodjes();}
+
+    public Map<String, Integer> getVerkochteBelegen(){return model.getAlleverkochteBelegen();}
 
     @Override
     public void update() {
