@@ -220,24 +220,23 @@ public class BestelFacade implements Subject {
         }
         return verkochteBroodjes;
     }
-    public Map<String, Integer> getAlleverkochteBelegen(){
+    public Map<String, Integer> getAlleverkochteBelegen() {
         Map<String, Integer> verkochteBelegen = new HashMap<>();
-        for (Bestelling bestelling: this.bestellingen){
-            for (Bestellijn bestellijn: bestelling.getBestellijnen()){
-                for (Beleg beleg: bestellijn.getBeleggen()){
+        for (Bestelling bestelling : this.bestellingen) {
+            for (Bestellijn bestellijn : bestelling.getBestellijnen()) {
+                for (Beleg beleg : bestellijn.getBeleggen()) {
                     String bel = beleg.getNaam();
-                    if (verkochteBelegen.containsKey(bel)){
+                    if (verkochteBelegen.containsKey(bel)) {
                         verkochteBelegen.put(bel, verkochteBelegen.get(bel) + 1);
-                    }
-                    else {
+                    } else {
                         verkochteBelegen.put(bel, 1);
                     }
                 }
             }
         }
         return verkochteBelegen;
-
-    public void slaVoorraadVeranderingOp() {
+    }
+    public void slaVoorraadVeranderingOp(){
         Properties properties = new Properties();
         try {
             InputStream is = new FileInputStream("src/bestanden/settings.properties");
