@@ -41,10 +41,11 @@ public class StatistiekPane extends Pane {
     final CategoryAxis yAxis2 = new CategoryAxis();
     final BarChart<Number,String> chart1 =
                 new BarChart<Number,String>(xAxis,yAxis);
-    private VBox mainPane;
+    private VBox mainPane, records1, records2;
+
     final BarChart<Number,String> chart2 =
             new BarChart<Number,String>(xAxis2,yAxis2);
-
+    private Label titel1, titel2;
 
     public StatistiekPane(AdminViewController controller) {
         this.controller = controller;
@@ -59,23 +60,38 @@ public class StatistiekPane extends Pane {
 
         //eerste grafiek
         VBox eerstebox = new VBox();
-        //HBox eerstebox = new HBox(20);
+
+        titel1 = new Label("Omzetstatistiek broodjes (in aantal stuks)");
+        records1 = new VBox();
+        records1.setPadding(new Insets(5,15,5,15));
+        records1.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
+        records1.setBorder(new Border(new BorderStroke(Color.BLACK,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+
         xAxis.setTickLabelRotation(90);
         chart1.setMaxWidth(500);
         chart1.setMaxHeight(150);
         yAxis.setLabel("Broodjes");
 
-        eerstebox.getChildren().addAll(chart1);
+        eerstebox.getChildren().addAll(titel1, records1, chart1);
 
         //tweede grafiek
         VBox tweedebox = new VBox();
+        titel2 = new Label("Omzetstatistiek beleg (in aantal porties)");
+        records2 = new VBox();
+        records2.setPadding(new Insets(5,15,5,15));
+        records2.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, CornerRadii.EMPTY, Insets.EMPTY)));
+        records2.setBorder(new Border(new BorderStroke(Color.BLACK,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
 
         xAxis2.setTickLabelRotation(90);
         chart2.setMaxWidth(500);
         chart2.setMaxHeight(250);
         yAxis2.setLabel("Belegen");
 
-        tweedebox.getChildren().addAll(chart2);
+        tweedebox.getChildren().addAll(titel2, records2, chart2);
 
         mainPane.getChildren().addAll(eerstebox, tweedebox);
 
@@ -87,10 +103,13 @@ public class StatistiekPane extends Pane {
 
     public void refreshVerkochteBroodjes(){
         this.verkochteBroodjes = controller.getVerkochteBroodjes();
+        records1.getChildren().removeAll(records1.getChildren());
         XYChart.Series series = new XYChart.Series();
         for (String key: verkochteBroodjes.keySet()){
             //update grafiek
             int value = verkochteBroodjes.get(key);
+            Label label = new Label(value + ": "+key);
+            records1.getChildren().addAll(label);
             series.getData().add(new XYChart.Data(value, key));
         }
         if (chart1.getData().size() > 0){
@@ -101,10 +120,13 @@ public class StatistiekPane extends Pane {
 
     public void refreshVerkochteBelegen(){
         this.verkochteBelegen = controller.getVerkochteBelegen();
+        records2.getChildren().removeAll(records2.getChildren());
         XYChart.Series series = new XYChart.Series();
         for (String key: verkochteBelegen.keySet()){
             //update grafiek
             int value = verkochteBelegen.get(key);
+            Label label = new Label(value + ": "+key);
+            records2.getChildren().addAll(label);
             series.getData().add(new XYChart.Data(value, key));
         }
         if (chart2.getData().size() > 0){
