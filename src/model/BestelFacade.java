@@ -207,31 +207,20 @@ public class BestelFacade implements Subject {
 
     public Map<String, Integer> getAlleverkochteBroodjes(){
         Map<String, Integer> verkochteBroodjes = new HashMap<>();
-        for (Bestelling bestelling: this.bestellingen){
-            for (Bestellijn bestellijn: bestelling.getBestellijnen()){
-                String broodje = bestellijn.getBroodje().getNaam();
-                if (verkochteBroodjes.containsKey(broodje)){
-                    verkochteBroodjes.put(broodje, verkochteBroodjes.get(broodje) + 1);
-                }
-                else{
-                    verkochteBroodjes.put(broodje, 1);
-                }
+        ArrayList<Broodje> broodjes = (ArrayList<Broodje>) broodjesDB.getBroodjes();
+        for (Broodje broodje : broodjes){
+            if (broodje.getVerkocht() != 0){
+                verkochteBroodjes.put(broodje.getNaam(), broodje.getVerkocht());
             }
         }
         return verkochteBroodjes;
     }
     public Map<String, Integer> getAlleverkochteBelegen() {
         Map<String, Integer> verkochteBelegen = new HashMap<>();
-        for (Bestelling bestelling : this.bestellingen) {
-            for (Bestellijn bestellijn : bestelling.getBestellijnen()) {
-                for (Beleg beleg : bestellijn.getBeleggen()) {
-                    String bel = beleg.getNaam();
-                    if (verkochteBelegen.containsKey(bel)) {
-                        verkochteBelegen.put(bel, verkochteBelegen.get(bel) + 1);
-                    } else {
-                        verkochteBelegen.put(bel, 1);
-                    }
-                }
+        ArrayList<Beleg> beleggen = (ArrayList<Beleg>) belegDB.getBeleggen();
+        for (Beleg beleg : beleggen){
+            if (beleg.getVerkocht() != 0){
+                verkochteBelegen.put(beleg.getNaam(), beleg.getVerkocht());
             }
         }
         return verkochteBelegen;

@@ -41,6 +41,7 @@ public class Beleg {
 
     public void aanpassenVoorraad(int aantal){
         this.voorraad = this.voorraad - aantal;
+        this.verkocht = this.verkocht + aantal;
     }
 
     @Override

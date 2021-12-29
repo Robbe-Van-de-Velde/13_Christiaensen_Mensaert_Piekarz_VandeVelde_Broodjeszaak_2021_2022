@@ -99,6 +99,9 @@ public class StatistiekPane extends Pane {
 
         mainPane.getChildren().addAll(eerstebox, tweedebox);
 
+        refreshVerkochteBelegen();
+        refreshVerkochteBroodjes();
+
         this.getChildren().add(mainPane);
     }
 
